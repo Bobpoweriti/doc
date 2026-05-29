@@ -46,6 +46,97 @@
   border-color: rgba(255,255,255,.5);
 }
 
+/* ===== PAGE D'ACCUEIL CARTES ===== */
+.home-hero {
+  background: #0d1117;
+  margin: -2rem -2rem 0;
+  padding: 2.5rem 2rem 3rem;
+  min-height: 80vh;
+}
+.home-title {
+  color: #fff;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 .5rem;
+}
+.home-subtitle {
+  color: #8b949e;
+  text-align: center;
+  font-size: 1rem;
+  margin: 0 0 2.5rem;
+}
+.home-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  max-width: 960px;
+  margin: 0 auto;
+}
+@media (max-width: 768px) {
+  .home-grid { grid-template-columns: 1fr; }
+}
+@media (min-width: 769px) and (max-width: 1024px) {
+  .home-grid { grid-template-columns: repeat(2, 1fr); }
+}
+.home-card {
+  background: #161b22;
+  border-radius: 8px;
+  border: 1.5px solid transparent;
+  padding: 1.25rem;
+  display: flex;
+  gap: 1rem;
+  text-decoration: none;
+  color: inherit;
+  transition: transform .15s, box-shadow .15s;
+}
+a.home-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0,0,0,.4);
+  text-decoration: none;
+}
+.home-card--soon { opacity: .6; cursor: default; }
+.home-card--blue   { border-color: #3b82f6; }
+.home-card--orange { border-color: #f97316; }
+.home-card--green  { border-color: #22c55e; }
+.home-card--purple { border-color: #a855f7; }
+.home-card--cyan   { border-color: #06b6d4; }
+.home-card--yellow { border-color: #eab308; }
+.home-card-icon {
+  font-size: 1.75rem;
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,.05);
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+.home-card-body h3 {
+  color: #e6edf3;
+  font-size: .95rem;
+  font-weight: 700;
+  margin: 0 0 .4rem;
+}
+.home-card-body p {
+  color: #8b949e;
+  font-size: .82rem;
+  line-height: 1.45;
+  margin: 0 0 .75rem;
+}
+.home-card-cta {
+  font-size: .82rem;
+  font-weight: 600;
+}
+.home-card--blue   .home-card-cta { color: #3b82f6; }
+.home-card--orange .home-card-cta { color: #f97316; }
+.home-card--green  .home-card-cta { color: #22c55e; }
+.home-card--purple .home-card-cta { color: #a855f7; }
+.home-card--cyan   .home-card-cta { color: #06b6d4; }
+.home-card--yellow .home-card-cta { color: #eab308; }
+.home-card-cta--soon { color: #4b5563 !important; }
+
 /* ===== NAV TOUJOURS DÉROULÉ ===== */
 .nav-item > .nav-list {
   display: block !important;

@@ -1,32 +1,68 @@
 = POWERiti — Base documentaire technique
 :description: Documentation technique interne POWERiti — Offre mySerenity
+:!showtitle:
 
-Bienvenue sur la base documentaire technique de *POWERiti*.
+++++
+<div class="home-hero">
+  <h1 class="home-title">POWERiti</h1>
+  <p class="home-subtitle">Documentation technique interne — Offre mySerenity</p>
 
-Ce site centralise l'ensemble des configurations, politiques et procédures déployées sur les tenants Microsoft 365 gérés dans le cadre de l'offre *mySerenity*.
+  <div class="home-grid">
 
-== Tenants documentés
+    <a class="home-card home-card--blue" href="master/entra-id/conditional-access.html">
+      <div class="home-card-icon">🔐</div>
+      <div class="home-card-body">
+        <h3>Accès Conditionnel</h3>
+        <p>Blocages géographiques, appareils non conformes, MFA adaptatif.</p>
+        <span class="home-card-cta">9 politiques ›</span>
+      </div>
+    </a>
 
-[cols="1,2,1"]
-|===
-|Tenant |Description |Statut
+    <a class="home-card home-card--orange" href="master/intune/configuration-profiles.html">
+      <div class="home-card-icon">💻</div>
+      <div class="home-card-body">
+        <h3>Politiques Intune</h3>
+        <p>BitLocker, durcissement Edge, compte PowerAdmin, stockage, LAPS.</p>
+        <span class="home-card-cta">5 politiques ›</span>
+      </div>
+    </a>
 
-|xref:master:index.adoc[MASTER]
-|Tenant de référence POWERiti — template de déploiement standard
-|Actif
-|===
+    <div class="home-card home-card--green home-card--soon">
+      <div class="home-card-icon">📧</div>
+      <div class="home-card-body">
+        <h3>Exchange Online</h3>
+        <p>Politiques de messagerie, connecteurs, règles de flux mail.</p>
+        <span class="home-card-cta home-card-cta--soon">À venir</span>
+      </div>
+    </div>
 
-== Domaines couverts
+    <div class="home-card home-card--purple home-card--soon">
+      <div class="home-card-icon">🛡️</div>
+      <div class="home-card-body">
+        <h3>Defender / Sécurité</h3>
+        <p>Politiques Defender, alertes, conformité et gestion des risques.</p>
+        <span class="home-card-cta home-card-cta--soon">À venir</span>
+      </div>
+    </div>
 
-* *Entra ID* — Accès conditionnel, groupes, rôles et permissions
-* *Intune* — Profils de configuration, politiques de conformité, déploiement d'apps
-* *Exchange* — Politiques de messagerie
-* *Sécurité* — Defender, MFA
+    <div class="home-card home-card--cyan home-card--soon">
+      <div class="home-card-icon">🚀</div>
+      <div class="home-card-body">
+        <h3>Autopilot</h3>
+        <p>Profils de déploiement, groupes d'appareils, séquences de tâches.</p>
+        <span class="home-card-cta home-card-cta--soon">À venir</span>
+      </div>
+    </div>
 
-== Utilisation
+    <div class="home-card home-card--yellow home-card--soon">
+      <div class="home-card-icon">📁</div>
+      <div class="home-card-body">
+        <h3>Templates</h3>
+        <p>Modèles de déploiement standard pour nouveaux tenants mySerenity.</p>
+        <span class="home-card-cta home-card-cta--soon">À venir</span>
+      </div>
+    </div>
 
-Cette documentation est à usage interne exclusif.
-Toute modification doit faire l'objet d'un ticket Autotask validé par le Directeur Technique.
-
-'''
-_POWERiti · mySerenity — Document interne confidentiel_
+  </div>
+</div>
+++++
