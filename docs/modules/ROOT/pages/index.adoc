@@ -4,63 +4,39 @@
 
 ++++
 <div class="home-hero">
-  <h1 class="home-title">POWERiti</h1>
-  <p class="home-subtitle">Documentation technique interne — Offre mySerenity</p>
+  <h1 class="home-title">POWERiti — Documentation technique</h1>
+  <p class="home-subtitle">Configurations, politiques et procédures déployées sur les tenants Microsoft 365 mySerenity.</p>
 
   <div class="home-grid">
 
     <a class="home-card home-card--blue" href="master/entra-id/conditional-access.html">
-      <div class="home-card-icon">🔐</div>
-      <div class="home-card-body">
-        <h3>Accès Conditionnel</h3>
-        <p>Blocages géographiques, appareils non conformes, MFA adaptatif.</p>
-        <span class="home-card-cta">9 politiques ›</span>
-      </div>
+      <div class="home-card-title">Accès Conditionnel</div>
+      <div class="home-card-badge">9</div>
     </a>
 
     <a class="home-card home-card--orange" href="master/intune/configuration-profiles.html">
-      <div class="home-card-icon">💻</div>
-      <div class="home-card-body">
-        <h3>Politiques Intune</h3>
-        <p>BitLocker, durcissement Edge, compte PowerAdmin, stockage, LAPS.</p>
-        <span class="home-card-cta">5 politiques ›</span>
-      </div>
+      <div class="home-card-title">Politiques Intune</div>
+      <div class="home-card-badge">5</div>
     </a>
 
     <div class="home-card home-card--green home-card--soon">
-      <div class="home-card-icon">📧</div>
-      <div class="home-card-body">
-        <h3>Exchange Online</h3>
-        <p>Politiques de messagerie, connecteurs, règles de flux mail.</p>
-        <span class="home-card-cta home-card-cta--soon">À venir</span>
-      </div>
+      <div class="home-card-title">Exchange Online</div>
+      <div class="home-card-badge home-card-badge--soon">À venir</div>
     </div>
 
     <div class="home-card home-card--purple home-card--soon">
-      <div class="home-card-icon">🛡️</div>
-      <div class="home-card-body">
-        <h3>Defender / Sécurité</h3>
-        <p>Politiques Defender, alertes, conformité et gestion des risques.</p>
-        <span class="home-card-cta home-card-cta--soon">À venir</span>
-      </div>
+      <div class="home-card-title">Defender / Sécurité</div>
+      <div class="home-card-badge home-card-badge--soon">À venir</div>
     </div>
 
     <div class="home-card home-card--cyan home-card--soon">
-      <div class="home-card-icon">🚀</div>
-      <div class="home-card-body">
-        <h3>Autopilot</h3>
-        <p>Profils de déploiement, groupes d'appareils, séquences de tâches.</p>
-        <span class="home-card-cta home-card-cta--soon">À venir</span>
-      </div>
+      <div class="home-card-title">Autopilot</div>
+      <div class="home-card-badge home-card-badge--soon">À venir</div>
     </div>
 
     <div class="home-card home-card--yellow home-card--soon">
-      <div class="home-card-icon">📁</div>
-      <div class="home-card-body">
-        <h3>Templates</h3>
-        <p>Modèles de déploiement standard pour nouveaux tenants mySerenity.</p>
-        <span class="home-card-cta home-card-cta--soon">À venir</span>
-      </div>
+      <div class="home-card-title">Templates</div>
+      <div class="home-card-badge home-card-badge--soon">À venir</div>
     </div>
 
   </div>
