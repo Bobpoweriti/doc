@@ -1,10 +1,8 @@
 = POWERiti — Base documentaire technique
 :description: Documentation technique interne POWERiti — Offre mySerenity
-:!showtitle:
 
 ++++
 <div class="home-hero">
-  <h1 class="home-title">POWERiti — Documentation technique</h1>
   <p class="home-subtitle">Configurations, politiques et procédures déployées sur les tenants Microsoft 365 mySerenity.</p>
 
   <div class="home-grid">
