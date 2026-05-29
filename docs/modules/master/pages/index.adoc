@@ -1,0 +1,46 @@
+= Tenant MASTER — Documentation de référence
+POWERiti — Équipe Technique
+:version: 1.0
+:revdate: 28/05/2026
+
+Le tenant *MASTER* est le tenant Microsoft 365 de référence POWERiti.
+Il sert de template de déploiement pour l'ensemble des environnements clients.
+
+Toute politique, configuration ou règle validée ici est considérée
+comme standard de déploiement POWERiti.
+
+== Périmètre
+
+[cols="1,2"]
+|===
+|Domaine |Contenu documenté
+
+|xref:intune/configuration-profiles.adoc[Intune]
+|Profils de configuration, politiques de conformité, déploiement d'apps
+
+|xref:entra-id/conditional-access.adoc[Entra ID]
+|Accès conditionnel, groupes, rôles et permissions
+
+|Exchange
+|Politiques de messagerie
+
+|Sécurité
+|Defender, MFA
+|===
+
+== Accès et responsabilités
+
+* *Propriétaire* : POWERiti Équipe Technique
+* *Validation des changements* : Directeur Technique
+* *Mise à jour de la doc* : Technicien en charge
+
+== Historique des révisions
+
+[cols="1,1,2"]
+|===
+|Version |Date |Modification
+
+|1.0
+|28/05/2026
+|Création initiale
+|===

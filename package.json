@@ -1,0 +1,12 @@
+{
+  "name": "poweriti-docs",
+  "private": true,
+  "scripts": {
+    "build": "antora antora-playbook.yml",
+    "build:local": "antora --attribute site-url='' antora-playbook.yml"
+  },
+  "devDependencies": {
+    "@antora/cli": "^3.1",
+    "@antora/site-generator": "^3.1"
+  }
+}

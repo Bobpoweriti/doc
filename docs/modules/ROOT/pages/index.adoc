@@ -1,0 +1,32 @@
+= POWERiti — Base documentaire technique
+:description: Documentation technique interne POWERiti — Offre mySerenity
+
+Bienvenue sur la base documentaire technique de *POWERiti*.
+
+Ce site centralise l'ensemble des configurations, politiques et procédures déployées sur les tenants Microsoft 365 gérés dans le cadre de l'offre *mySerenity*.
+
+== Tenants documentés
+
+[cols="1,2,1"]
+|===
+|Tenant |Description |Statut
+
+|xref:master:index.adoc[MASTER]
+|Tenant de référence POWERiti — template de déploiement standard
+|Actif
+|===
+
+== Domaines couverts
+
+* *Entra ID* — Accès conditionnel, groupes, rôles et permissions
+* *Intune* — Profils de configuration, politiques de conformité, déploiement d'apps
+* *Exchange* — Politiques de messagerie
+* *Sécurité* — Defender, MFA
+
+== Utilisation
+
+Cette documentation est à usage interne exclusif.
+Toute modification doit faire l'objet d'un ticket Autotask validé par le Directeur Technique.
+
+'''
+_POWERiti · mySerenity — Document interne confidentiel_

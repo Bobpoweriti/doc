@@ -1,0 +1,4 @@
+.Tenant MASTER
+* xref:master:index.adoc[Présentation]
+** xref:master:entra-id/conditional-access.adoc[Accès Conditionnel]
+** xref:master:intune/configuration-profiles.adoc[Politiques Intune]

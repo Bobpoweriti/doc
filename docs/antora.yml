@@ -1,0 +1,6 @@
+name: poweriti
+title: POWERiti Documentation
+version: ~
+nav:
+  - modules/ROOT/nav.adoc
+  - modules/master/nav.adoc

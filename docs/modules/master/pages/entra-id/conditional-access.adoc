@@ -1,0 +1,275 @@
+= Stratégies d'accès conditionnel — Tenant MASTER
+POWERiti — Équipe Technique
+:version: 1.0
+:revdate: 13/05/2026
+:sectnums:
+
+== Contexte et objectifs
+
+Ce document décrit l'ensemble des stratégies d'accès conditionnel (Conditional Access) déployées sur les tenants Microsoft 365 gérés par POWERiti dans le cadre de l'offre mySerenity.
+
+Ces politiques constituent le socle de sécurité identitaire appliqué de façon standardisée à l'ensemble du parc client. Elles s'inscrivent dans la démarche de sécurité globale POWERiti (label ExpertCyber) et visent à :
+
+* Bloquer les accès non conformes à la politique de sécurité (géolocalisation, appareils inconnus, protocoles hérités)
+* Imposer l'authentification multifacteur (MFA) avec des fréquences adaptées au profil de risque
+* Restreindre l'accès aux outils d'administration (Microsoft Graph, CoreView) à leurs périmètres légitimes
+
+== Lexique
+
+[cols="1,2,3"]
+|===
+|Abréviation |Désignation complète |Description
+
+|CA
+|Conditional Access
+|Stratégie d'accès conditionnel Microsoft Entra ID
+
+|All APPS
+|Toutes les applications
+|Navigateur, Pack Office, Microsoft Graph, etc.
+
+|BLOCK
+|Blocage définitif
+|L'octroi est définitivement bloqué — aucun accès possible
+
+|MFA
+|Multi-Factor Authentication
+|Authentification multifacteur requise
+|===
+
+== Tableau récapitulatif
+
+[cols="1,1,1,3"]
+|===
+|ID |Apps |Action |Nom de la stratégie
+
+|CA001
+|All APPS
+|BLOCK
+|OUTSIDE FRANCE & TRUSTED LOCATION
+
+|CA002
+|All APPS
+|BLOCK
+|LEGACY AUTHENTICATION
+
+|CA003
+|All APPS
+|BLOCK
+|COREVIEW EXCEPTION
+
+|CA004
+|All APPS
+|BLOCK
+|UNKNOWN & UNTRUSTED DEVICES
+
+|CA005
+|Graph
+|BLOCK
+|GRAPH TOOLS
+
+|CA006
+|All APPS
+|MFA
+|ADMINISTRATORS
+
+|CA007
+|All APPS
+|MFA
+|USERS
+
+|CA008
+|All APPS
+|MFA
+|OUTSIDE FRANCE
+
+|CA009
+|All APPS
+|MFA
+|GUEST USERS
+|===
+
+== Détail des stratégies
+
+=== Stratégies de blocage (BLOCK)
+
+==== CA001 — All APPS BLOCK OUTSIDE FRANCE & TRUSTED LOCATION
+
+*Description* +
+Bloque l'accès à l'environnement Microsoft 365 depuis n'importe quel pays situé hors de France.
+
+*Règles appliquées*
+
+* Périmètre géographique : tous les pays exclus de l'emplacement nommé `GEO_FRANCE` et non inclus dans `GEO_TEMPO-COUNTRY-ALLOWED`
+* Exception : membres du groupe utilisateurs `GRP_HORS-FRANCE-OK`
+
+*Objets référencés*
+
+* Emplacement nommé : `GEO_FRANCE`
+* Emplacement nommé : `GEO_TEMPO-COUNTRY-ALLOWED`
+* Groupe : `GRP_HORS-FRANCE-OK`
+
+---
+
+==== CA002 — All APPS BLOCK LEGACY AUTHENTICATION
+
+*Description* +
+Bloque l'utilisation des protocoles d'authentification hérités, incompatibles avec les mécanismes de sécurité modernes.
+
+*Règles appliquées*
+
+* Protocoles visés : ActiveSync, SMTP authentifié, IMAP, POP3, et tout protocole hérité équivalent
+* Aucune exception — blocage universel sur tous les comptes
+
+*Objets référencés*
+
+* Protocoles hérités (Legacy Auth)
+
+---
+
+==== CA003 — All APPS BLOCK COREVIEW EXCEPTION
+
+*Description* +
+Restreint les connexions des comptes de service CoreView à leur plage d'adresses IP de référence.
+
+*Règles appliquées*
+
+* S'applique à tous les comptes CoreView du tenant
+* Bloque toute connexion effectuée depuis un emplacement autre que `IP_COREVIEW`
+
+*Objets référencés*
+
+* Emplacement nommé : `IP_COREVIEW`
+* Comptes CoreView
+
+---
+
+==== CA004 — All APPS BLOCK UNKNOWN & UNTRUSTED DEVICES
+
+*Description* +
+Bloque l'accès à Microsoft 365 pour tout appareil non reconnu par Microsoft Entra ID.
+
+*Règles appliquées*
+
+* Appareils autorisés : Entra Joined, Entra Registered, Hybrid Azure AD Joined
+* Exceptions : appareils Android et iOS (gérés via MAM/Intune), utilisateurs invités (Guests)
+
+*Objets référencés*
+
+* Entra ID Join status
+* Exceptions : Android, iOS, Guests
+
+---
+
+==== CA005 — Graph BLOCK GRAPH TOOLS
+
+*Description* +
+Restreint l'accès à Microsoft Graph aux seuls comptes et ressources autorisés.
+
+*Règles appliquées*
+
+* Exception : membres du groupe `GRP_ADMINISTRATEUR`
+* Ressources système exclues : Graph Connector Service, Microsoft Graph CLI, Microsoft Graph Change Tracker, Microsoft Graph Connector Core
+
+*Objets référencés*
+
+* Groupe : `GRP_ADMINISTRATEUR`
+* Ressources : Graph Connector Service, Graph CLI, Change Tracker, Connector Core
+
+---
+
+=== Stratégies d'authentification (MFA)
+
+==== CA006 — All APPS MFA ADMINISTRATORS
+
+*Description* +
+Impose une ré-authentification MFA toutes les heures pour les comptes administrateurs.
+
+*Règles appliquées*
+
+* Fréquence : toutes les heures (session token lifetime = 1h)
+* Périmètre : membres du groupe `GRP_ADMINISTRATEUR`
+* Exclusions : comptes CoreView 1, CoreView 2, CoreView 4fard, tenant ALSO
+
+*Objets référencés*
+
+* Groupe : `GRP_ADMINISTRATEUR`
+* Exclusions : CoreView 1, CoreView 2, CoreView 4fard, Tenant ALSO
+
+---
+
+==== CA007 — All APPS MFA USERS
+
+*Description* +
+Impose une ré-authentification MFA tous les 3 mois pour l'ensemble des utilisateurs standards.
+
+*Règles appliquées*
+
+* Fréquence : tous les 3 mois (90 jours)
+* Exclusions : groupe `GRP_ADMINISTRATEUR`, comptes CoreView, tenant ALSO
+
+*Objets référencés*
+
+* Tous les utilisateurs
+* Exclusions : `GRP_ADMINISTRATEUR`, CoreView, Tenant ALSO
+
+---
+
+==== CA008 — All APPS MFA OUTSIDE FRANCE
+
+*Description* +
+Impose une ré-authentification MFA toutes les 24 heures pour les connexions depuis des pays étrangers autorisés.
+
+*Règles appliquées*
+
+* Fréquence : toutes les 24 heures
+* Périmètre : connexions depuis l'emplacement `GEO_TEMPO-COUNTRY-ALLOWED`
+* Applicable uniquement aux utilisateurs du groupe `GRP_HORS-FRANCE-OK`
+
+*Objets référencés*
+
+* Emplacement nommé : `GEO_TEMPO-COUNTRY-ALLOWED`
+* Groupe : `GRP_HORS-FRANCE-OK`
+
+---
+
+==== CA009 — All APPS MFA GUEST USERS
+
+*Description* +
+Impose une ré-authentification MFA toutes les 24 heures pour tous les utilisateurs invités (B2B).
+
+*Règles appliquées*
+
+* Fréquence : toutes les 24 heures
+* Périmètre : tous les comptes de type Guest / utilisateurs invités B2B
+* Aucune exception prévue
+
+*Objets référencés*
+
+* Utilisateurs invités (Guest / B2B)
+
+---
+
+== Notes de gestion
+
+IMPORTANT: Les emplacements nommés (`GEO_FRANCE`, `GEO_TEMPO-COUNTRY-ALLOWED`, `IP_COREVIEW`) doivent être maintenus à jour dans *Microsoft Entra ID > Conditional Access > Named Locations*.
+
+WARNING: Les groupes `GRP_ADMINISTRATEUR` et `GRP_HORS-FRANCE-OK` sont les principaux pivots d'exception — leur composition doit faire l'objet d'une revue d'accès régulière.
+
+NOTE: Toute demande d'exception client doit être instruite en ticket Autotask et validée par le Directeur Technique avant modification des politiques.
+
+TIP: Ce document est versionné — toute évolution des stratégies doit entraîner une mise à jour de la version et de la date en en-tête.
+
+== Historique des révisions
+
+[cols="1,1,3"]
+|===
+|Version |Date |Modification
+
+|1.0
+|13/05/2026
+|Création initiale — migration depuis Word vers AsciiDoc
+|===
+
+'''
+_POWERiti · mySerenity — Document interne confidentiel — Toute diffusion externe est soumise à autorisation préalable du Directeur Technique._
