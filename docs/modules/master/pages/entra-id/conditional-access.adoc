@@ -43,47 +43,47 @@ Ces politiques constituent le socle de sécurité identitaire appliqué de faço
 |===
 |ID |Apps |Action |Nom de la stratégie
 
-|CA001
+|<<ca001,CA001>>
 |All APPS
 |BLOCK
 |OUTSIDE FRANCE & TRUSTED LOCATION
 
-|CA002
+|<<ca002,CA002>>
 |All APPS
 |BLOCK
 |LEGACY AUTHENTICATION
 
-|CA003
+|<<ca003,CA003>>
 |All APPS
 |BLOCK
 |COREVIEW EXCEPTION
 
-|CA004
+|<<ca004,CA004>>
 |All APPS
 |BLOCK
 |UNKNOWN & UNTRUSTED DEVICES
 
-|CA005
+|<<ca005,CA005>>
 |Graph
 |BLOCK
 |GRAPH TOOLS
 
-|CA006
+|<<ca006,CA006>>
 |All APPS
 |MFA
 |ADMINISTRATORS
 
-|CA007
+|<<ca007,CA007>>
 |All APPS
 |MFA
 |USERS
 
-|CA008
+|<<ca008,CA008>>
 |All APPS
 |MFA
 |OUTSIDE FRANCE
 
-|CA009
+|<<ca009,CA009>>
 |All APPS
 |MFA
 |GUEST USERS
@@ -93,6 +93,7 @@ Ces politiques constituent le socle de sécurité identitaire appliqué de faço
 
 === Stratégies de blocage (BLOCK)
 
+[#ca001]
 ==== CA001 — All APPS BLOCK OUTSIDE FRANCE & TRUSTED LOCATION
 
 *Description* +
@@ -111,6 +112,7 @@ Bloque l'accès à l'environnement Microsoft 365 depuis n'importe quel pays situ
 
 ---
 
+[#ca002]
 ==== CA002 — All APPS BLOCK LEGACY AUTHENTICATION
 
 *Description* +
@@ -127,6 +129,7 @@ Bloque l'utilisation des protocoles d'authentification hérités, incompatibles 
 
 ---
 
+[#ca003]
 ==== CA003 — All APPS BLOCK COREVIEW EXCEPTION
 
 *Description* +
@@ -144,6 +147,7 @@ Restreint les connexions des comptes de service CoreView à leur plage d'adresse
 
 ---
 
+[#ca004]
 ==== CA004 — All APPS BLOCK UNKNOWN & UNTRUSTED DEVICES
 
 *Description* +
@@ -161,6 +165,7 @@ Bloque l'accès à Microsoft 365 pour tout appareil non reconnu par Microsoft En
 
 ---
 
+[#ca005]
 ==== CA005 — Graph BLOCK GRAPH TOOLS
 
 *Description* +
@@ -180,6 +185,7 @@ Restreint l'accès à Microsoft Graph aux seuls comptes et ressources autorisés
 
 === Stratégies d'authentification (MFA)
 
+[#ca006]
 ==== CA006 — All APPS MFA ADMINISTRATORS
 
 *Description* +
@@ -198,6 +204,7 @@ Impose une ré-authentification MFA toutes les heures pour les comptes administr
 
 ---
 
+[#ca007]
 ==== CA007 — All APPS MFA USERS
 
 *Description* +
@@ -215,6 +222,7 @@ Impose une ré-authentification MFA tous les 3 mois pour l'ensemble des utilisat
 
 ---
 
+[#ca008]
 ==== CA008 — All APPS MFA OUTSIDE FRANCE
 
 *Description* +
@@ -233,6 +241,7 @@ Impose une ré-authentification MFA toutes les 24 heures pour les connexions dep
 
 ---
 
+[#ca009]
 ==== CA009 — All APPS MFA GUEST USERS
 
 *Description* +
