@@ -1,21 +1,28 @@
-<button class="navbar-burger" data-target="topbar-nav">
-  <span></span>
-  <span></span>
-  <span></span>
-</button>
-<div id="topbar-nav" class="navbar-menu">
-  <div class="navbar-end">
-    <div class="navbar-item has-dropdown is-hoverable">
-      <a class="navbar-link" href="#">Portails M365</a>
-      <div class="navbar-dropdown">
-        <a class="navbar-item" href="https://admin.microsoft.com" target="_blank" rel="noopener">Admin Microsoft 365</a>
-        <a class="navbar-item" href="https://entra.microsoft.com" target="_blank" rel="noopener">Entra ID</a>
-        <a class="navbar-item" href="https://intune.microsoft.com" target="_blank" rel="noopener">Intune</a>
-        <a class="navbar-item" href="https://admin.exchange.microsoft.com" target="_blank" rel="noopener">Exchange Admin</a>
-        <a class="navbar-item" href="https://security.microsoft.com" target="_blank" rel="noopener">Defender / Sécurité</a>
-      </div>
-    </div>
-    <a class="navbar-item" href="https://github.com/Bobpoweriti/doc" target="_blank" rel="noopener">GitHub</a>
-    <a class="navbar-item" href="#" onclick="window.print(); return false;" title="Télécharger cette page en PDF">&#x2913; PDF</a>
+<nav class="navbar" role="banner">
+  <div class="navbar-brand">
+    <a class="navbar-item home-link" href="{{{siteRootPath}}}/index.html">
+      <span class="title">{{site.title}}</span>
+    </a>
+    <button class="navbar-burger" data-target="topbar-nav">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </div>
-</div>
+  <div id="topbar-nav" class="navbar-menu">
+    <div class="navbar-end">
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link" href="#">Portails M365</a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://admin.microsoft.com" target="_blank" rel="noopener">Admin Microsoft 365</a>
+          <a class="navbar-item" href="https://entra.microsoft.com" target="_blank" rel="noopener">Entra ID</a>
+          <a class="navbar-item" href="https://intune.microsoft.com" target="_blank" rel="noopener">Intune</a>
+          <a class="navbar-item" href="https://admin.exchange.microsoft.com" target="_blank" rel="noopener">Exchange Admin</a>
+          <a class="navbar-item" href="https://security.microsoft.com" target="_blank" rel="noopener">Defender / Sécurité</a>
+        </div>
+      </div>
+      <a class="navbar-item" href="https://github.com/Bobpoweriti/doc" target="_blank" rel="noopener">GitHub</a>
+      <a class="navbar-item" href="#" onclick="window.print(); return false;" title="Télécharger cette page en PDF">&#x2913; PDF</a>
+    </div>
+  </div>
+</nav>
