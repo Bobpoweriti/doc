@@ -22,29 +22,30 @@ Ces politiques constituent le socle commun appliqué de façon standardisée à 
 |===
 |Policy |Type |Cible
 
-|Bitlocker - ON
+|<<pol-bitlocker,Bitlocker - ON>>
 |Catalogue des paramètres
 |Tous les appareils
 
-|Configuration Edge
+|<<pol-edge,Configuration Edge>>
 |Modèles d'administration
 |Tous les utilisateurs
 
-|Configuration PowerAdmin
+|<<pol-poweradmin,Configuration PowerAdmin>>
 |Personnalisé (OMA-URI)
 |Tous les appareils
 
-|Gestion du stockage
+|<<pol-stockage,Gestion du stockage>>
 |Catalogue des paramètres
 |Tous les appareils
 
-|LAPS
+|<<pol-laps,LAPS>>
 |Windows LAPS
 |Tous les appareils
 |===
 
 == Détail des politiques
 
+[#pol-bitlocker]
 === Bitlocker - ON
 
 *Description* +
@@ -79,6 +80,7 @@ NOTE: Le PIN est délibérément désactivé pour éviter les blocages lors des 
 
 ---
 
+[#pol-edge]
 === Configuration Edge
 
 *Description* +
@@ -137,6 +139,7 @@ IMPORTANT: Le gestionnaire de mots de passe Edge est entièrement désactivé. K
 
 ---
 
+[#pol-poweradmin]
 === Configuration PowerAdmin
 
 *Description* +
@@ -161,6 +164,7 @@ NOTE: Cette policy fonctionne en trio avec `Enable LAPS` et `LAPS` pour assurer 
 
 ---
 
+[#pol-stockage]
 === Gestion du stockage
 
 *Description* +
@@ -193,6 +197,7 @@ Gestion automatique de l'espace disque via l'Assistant Stockage Windows.
 
 ---
 
+[#pol-laps]
 === LAPS
 
 *Description* +
