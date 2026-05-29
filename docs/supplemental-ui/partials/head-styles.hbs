@@ -45,6 +45,12 @@
   background: rgba(255,255,255,.2);
   border-color: rgba(255,255,255,.5);
 }
+@media (max-width: 768px) {
+  .navbar-search { display: none; }
+  .navbar-brand { width: 100%; justify-content: space-between; }
+  .navbar-end { flex-direction: column; width: 100%; }
+  .navbar-end .navbar-item { justify-content: flex-start; }
+}
 
 /* ===== PAGE D'ACCUEIL CARTES ===== */
 article:has(.home-hero) h1.page {
