@@ -2,5 +2,4 @@ name: poweriti
 title: Tenant Master Poweriti
 version: ~
 nav:
-  - modules/ROOT/nav.adoc
   - modules/master/nav.adoc
