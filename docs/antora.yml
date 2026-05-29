@@ -1,5 +1,5 @@
 name: poweriti
-title: POWERiti Documentation
+title: Tenant Master Poweriti
 version: ~
 nav:
   - modules/ROOT/nav.adoc
