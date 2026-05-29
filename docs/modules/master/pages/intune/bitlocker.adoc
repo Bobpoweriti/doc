@@ -1,0 +1,31 @@
+= BitLocker — ON
+POWERiti — Équipe Technique
+:revdate: 28/05/2026
+
+xref:intune/configuration-profiles.adoc[← Retour au tableau récapitulatif]
+
+[cols="1,1"]
+|===
+|Type |Cible
+|Catalogue des paramètres |Tous les appareils
+|===
+
+== Description
+
+Chiffrement automatique et silencieux de tous les disques.
+
+== Paramètres appliqués
+
+[cols="3,2"]
+|===
+|Paramètre |Valeur
+
+|Exiger le chiffrement des appareils |Activé
+|Lecteurs système — Chiffrement forcé |Enabled
+|Type de chiffrement |Full encryption
+|PIN au démarrage |Désactivé
+|Avertissement autre chiffrement |Désactivé
+|Chiffrement utilisateur standard |Désactivé
+|===
+
+NOTE: Le PIN est délibérément désactivé pour éviter les blocages lors des interventions à distance.

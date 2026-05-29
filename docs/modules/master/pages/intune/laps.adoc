@@ -1,0 +1,34 @@
+= LAPS — Rotation mot de passe PowerAdmin
+POWERiti — Équipe Technique
+:revdate: 28/05/2026
+
+xref:intune/configuration-profiles.adoc[← Retour au tableau récapitulatif]
+
+[cols="1,1"]
+|===
+|Type |Cible
+|Windows LAPS |Tous les appareils
+|===
+
+== Description
+
+Rotation automatique du mot de passe du compte `PowerAdmin`, stocké dans Entra ID.
+
+== Paramètres appliqués
+
+[cols="3,2"]
+|===
+|Paramètre |Valeur
+
+|Répertoire de sauvegarde |Microsoft Entra ID uniquement
+|Rotation du mot de passe |7 jours
+|Nom du compte géré |`PowerAdmin`
+|Complexité |Majuscules + minuscules + chiffres + caractères spéciaux
+|Longueur |20 caractères
+|Action post-authentification |Réinitialiser à l'expiration de la période de grâce
+|Délai après réinitialisation |24 heures
+|===
+
+TIP: Le mot de passe est consultable depuis le portail Intune par les admins POWERiti : *Appareils > [nom du poste] > Mot de passe administrateur local*.
+
+WARNING: L'accès au mot de passe LAPS est réservé aux admins POWERiti. Ne jamais communiquer ce mot de passe au client.

@@ -1,0 +1,25 @@
+= CA009 — All APPS MFA GUEST USERS
+POWERiti — Équipe Technique
+:revdate: 13/05/2026
+
+xref:entra-id/conditional-access.adoc[← Retour au tableau récapitulatif]
+
+[cols="1,1,1"]
+|===
+|ID |Apps |Action
+|CA009 |All APPS |MFA
+|===
+
+== Description
+
+Impose une ré-authentification MFA toutes les 24 heures pour tous les utilisateurs invités (B2B).
+
+== Règles appliquées
+
+* Fréquence : toutes les 24 heures
+* Périmètre : tous les comptes de type Guest / utilisateurs invités B2B
+* Aucune exception prévue
+
+== Objets référencés
+
+* Utilisateurs invités (Guest / B2B)

@@ -1,0 +1,26 @@
+= CA006 — All APPS MFA ADMINISTRATORS
+POWERiti — Équipe Technique
+:revdate: 13/05/2026
+
+xref:entra-id/conditional-access.adoc[← Retour au tableau récapitulatif]
+
+[cols="1,1,1"]
+|===
+|ID |Apps |Action
+|CA006 |All APPS |MFA
+|===
+
+== Description
+
+Impose une ré-authentification MFA toutes les heures pour les comptes administrateurs.
+
+== Règles appliquées
+
+* Fréquence : toutes les heures (session token lifetime = 1h)
+* Périmètre : membres du groupe `GRP_ADMINISTRATEUR`
+* Exclusions : comptes CoreView 1, CoreView 2, CoreView 4fard, tenant ALSO
+
+== Objets référencés
+
+* Groupe : `GRP_ADMINISTRATEUR`
+* Exclusions : CoreView 1, CoreView 2, CoreView 4fard, Tenant ALSO

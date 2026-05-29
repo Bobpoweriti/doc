@@ -1,0 +1,25 @@
+= CA003 — All APPS BLOCK COREVIEW EXCEPTION
+POWERiti — Équipe Technique
+:revdate: 13/05/2026
+
+xref:entra-id/conditional-access.adoc[← Retour au tableau récapitulatif]
+
+[cols="1,1,1"]
+|===
+|ID |Apps |Action
+|CA003 |All APPS |BLOCK
+|===
+
+== Description
+
+Restreint les connexions des comptes de service CoreView à leur plage d'adresses IP de référence.
+
+== Règles appliquées
+
+* S'applique à tous les comptes CoreView du tenant
+* Bloque toute connexion effectuée depuis un emplacement autre que `IP_COREVIEW`
+
+== Objets référencés
+
+* Emplacement nommé : `IP_COREVIEW`
+* Comptes CoreView

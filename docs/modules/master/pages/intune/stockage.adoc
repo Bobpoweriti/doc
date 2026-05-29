@@ -1,0 +1,29 @@
+= Gestion du stockage
+POWERiti — Équipe Technique
+:revdate: 28/05/2026
+
+xref:intune/configuration-profiles.adoc[← Retour au tableau récapitulatif]
+
+[cols="1,1"]
+|===
+|Type |Cible
+|Catalogue des paramètres |Tous les appareils
+|===
+
+== Description
+
+Gestion automatique de l'espace disque via l'Assistant Stockage Windows.
+
+== Paramètres appliqués
+
+[cols="3,2"]
+|===
+|Paramètre |Valeur
+
+|Autoriser les mises à jour du modèle d'intégrité de disque |Autoriser
+|Autoriser l'Assistant Stockage globalement |Autoriser
+|Autoriser le nettoyage des fichiers temporaires |Autoriser
+|Seuil de mise en attente contenu cloud |10 jours
+|Cadence globale de l'Assistant Stockage |7 jours
+|Seuil nettoyage corbeille |60 jours
+|===

@@ -1,0 +1,26 @@
+= CA008 — All APPS MFA OUTSIDE FRANCE
+POWERiti — Équipe Technique
+:revdate: 13/05/2026
+
+xref:entra-id/conditional-access.adoc[← Retour au tableau récapitulatif]
+
+[cols="1,1,1"]
+|===
+|ID |Apps |Action
+|CA008 |All APPS |MFA
+|===
+
+== Description
+
+Impose une ré-authentification MFA toutes les 24 heures pour les connexions depuis des pays étrangers autorisés.
+
+== Règles appliquées
+
+* Fréquence : toutes les 24 heures
+* Périmètre : connexions depuis l'emplacement `GEO_TEMPO-COUNTRY-ALLOWED`
+* Applicable uniquement aux utilisateurs du groupe `GRP_HORS-FRANCE-OK`
+
+== Objets référencés
+
+* Emplacement nommé : `GEO_TEMPO-COUNTRY-ALLOWED`
+* Groupe : `GRP_HORS-FRANCE-OK`

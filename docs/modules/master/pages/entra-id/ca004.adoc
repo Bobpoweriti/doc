@@ -1,0 +1,25 @@
+= CA004 — All APPS BLOCK UNKNOWN & UNTRUSTED DEVICES
+POWERiti — Équipe Technique
+:revdate: 13/05/2026
+
+xref:entra-id/conditional-access.adoc[← Retour au tableau récapitulatif]
+
+[cols="1,1,1"]
+|===
+|ID |Apps |Action
+|CA004 |All APPS |BLOCK
+|===
+
+== Description
+
+Bloque l'accès à Microsoft 365 pour tout appareil non reconnu par Microsoft Entra ID.
+
+== Règles appliquées
+
+* Appareils autorisés : Entra Joined, Entra Registered, Hybrid Azure AD Joined
+* Exceptions : appareils Android et iOS (gérés via MAM/Intune), utilisateurs invités (Guests)
+
+== Objets référencés
+
+* Entra ID Join status
+* Exceptions : Android, iOS, Guests

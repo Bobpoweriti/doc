@@ -1,0 +1,26 @@
+= CA001 — All APPS BLOCK OUTSIDE FRANCE
+POWERiti — Équipe Technique
+:revdate: 13/05/2026
+
+xref:entra-id/conditional-access.adoc[← Retour au tableau récapitulatif]
+
+[cols="1,1,1"]
+|===
+|ID |Apps |Action
+|CA001 |All APPS |BLOCK
+|===
+
+== Description
+
+Bloque l'accès à l'environnement Microsoft 365 depuis n'importe quel pays situé hors de France.
+
+== Règles appliquées
+
+* Périmètre géographique : tous les pays exclus de l'emplacement nommé `GEO_FRANCE` et non inclus dans `GEO_TEMPO-COUNTRY-ALLOWED`
+* Exception : membres du groupe `GRP_HORS-FRANCE-OK`
+
+== Objets référencés
+
+* Emplacement nommé : `GEO_FRANCE`
+* Emplacement nommé : `GEO_TEMPO-COUNTRY-ALLOWED`
+* Groupe : `GRP_HORS-FRANCE-OK`

@@ -22,23 +22,23 @@ Ces politiques constituent le socle commun appliqué de façon standardisée à 
 |===
 |Policy |Type |Cible
 
-|<<pol-bitlocker,Bitlocker - ON>>
+|xref:intune/bitlocker.adoc[BitLocker - ON]
 |Catalogue des paramètres
 |Tous les appareils
 
-|<<pol-edge,Configuration Edge>>
+|xref:intune/edge.adoc[Configuration Edge]
 |Modèles d'administration
 |Tous les utilisateurs
 
-|<<pol-poweradmin,Configuration PowerAdmin>>
+|xref:intune/poweradmin.adoc[Configuration PowerAdmin]
 |Personnalisé (OMA-URI)
 |Tous les appareils
 
-|<<pol-stockage,Gestion du stockage>>
+|xref:intune/stockage.adoc[Gestion du stockage]
 |Catalogue des paramètres
 |Tous les appareils
 
-|<<pol-laps,LAPS>>
+|xref:intune/laps.adoc[LAPS]
 |Windows LAPS
 |Tous les appareils
 |===

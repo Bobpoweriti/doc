@@ -1,0 +1,25 @@
+= CA007 — All APPS MFA USERS
+POWERiti — Équipe Technique
+:revdate: 13/05/2026
+
+xref:entra-id/conditional-access.adoc[← Retour au tableau récapitulatif]
+
+[cols="1,1,1"]
+|===
+|ID |Apps |Action
+|CA007 |All APPS |MFA
+|===
+
+== Description
+
+Impose une ré-authentification MFA tous les 3 mois pour l'ensemble des utilisateurs standards.
+
+== Règles appliquées
+
+* Fréquence : tous les 3 mois (90 jours)
+* Exclusions : groupe `GRP_ADMINISTRATEUR`, comptes CoreView, tenant ALSO
+
+== Objets référencés
+
+* Tous les utilisateurs
+* Exclusions : `GRP_ADMINISTRATEUR`, CoreView, Tenant ALSO

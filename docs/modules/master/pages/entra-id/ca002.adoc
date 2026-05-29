@@ -1,0 +1,24 @@
+= CA002 — All APPS BLOCK LEGACY AUTHENTICATION
+POWERiti — Équipe Technique
+:revdate: 13/05/2026
+
+xref:entra-id/conditional-access.adoc[← Retour au tableau récapitulatif]
+
+[cols="1,1,1"]
+|===
+|ID |Apps |Action
+|CA002 |All APPS |BLOCK
+|===
+
+== Description
+
+Bloque l'utilisation des protocoles d'authentification hérités, incompatibles avec les mécanismes de sécurité modernes.
+
+== Règles appliquées
+
+* Protocoles visés : ActiveSync, SMTP authentifié, IMAP, POP3, et tout protocole hérité équivalent
+* Aucune exception — blocage universel sur tous les comptes
+
+== Objets référencés
+
+* Protocoles hérités (Legacy Auth)

@@ -1,0 +1,39 @@
+= Configuration Edge
+POWERiti — Équipe Technique
+:revdate: 28/05/2026
+
+xref:intune/configuration-profiles.adoc[← Retour au tableau récapitulatif]
+
+[cols="1,1"]
+|===
+|Type |Cible
+|Modèles d'administration |Tous les utilisateurs
+|===
+
+== Description
+
+Durcissement du navigateur Edge et désactivation du gestionnaire de mots de passe natif (Keeper utilisé à la place).
+
+== Paramètres appliqués
+
+[cols="3,2"]
+|===
+|Paramètre |Valeur
+
+|Import infos de paiement |Désactivé
+|Expérience zone de recherche nouvel onglet |Activé
+|Limiter longueur mots de passe (Gestionnaire Edge) |Désactivé
+|Extensions mode silencieux |Activé
+|Domaines gestionnaire de mots de passe Edge |Désactivé
+|Moteur de recherche par défaut |Activé
+|Déclencheur avertissement mot de passe |Désactivé
+|Installation extensions spécifiques |Activé
+|Suppression mots de passe Edge |Désactivé
+|Suppression données navigation à la fermeture |Désactivé
+|Enregistrement cookies à la fermeture |Désactivé
+|Enregistrement mots de passe (Gestionnaire Edge) |Désactivé
+|Configurer les cookies |Activé
+|Suggestion mot de passe fort |Désactivé
+|===
+
+IMPORTANT: Le gestionnaire de mots de passe Edge est entièrement désactivé. Keeper est le seul gestionnaire autorisé sur les postes mySerenity.

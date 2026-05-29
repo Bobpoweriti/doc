@@ -1,0 +1,25 @@
+= CA005 — Graph BLOCK GRAPH TOOLS
+POWERiti — Équipe Technique
+:revdate: 13/05/2026
+
+xref:entra-id/conditional-access.adoc[← Retour au tableau récapitulatif]
+
+[cols="1,1,1"]
+|===
+|ID |Apps |Action
+|CA005 |Graph |BLOCK
+|===
+
+== Description
+
+Restreint l'accès à Microsoft Graph aux seuls comptes et ressources autorisés.
+
+== Règles appliquées
+
+* Exception : membres du groupe `GRP_ADMINISTRATEUR`
+* Ressources système exclues : Graph Connector Service, Microsoft Graph CLI, Microsoft Graph Change Tracker, Microsoft Graph Connector Core
+
+== Objets référencés
+
+* Groupe : `GRP_ADMINISTRATEUR`
+* Ressources : Graph Connector Service, Graph CLI, Change Tracker, Connector Core

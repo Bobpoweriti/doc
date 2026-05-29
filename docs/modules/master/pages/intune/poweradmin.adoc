@@ -1,0 +1,27 @@
+= Configuration PowerAdmin
+POWERiti — Équipe Technique
+:revdate: 28/05/2026
+
+xref:intune/configuration-profiles.adoc[← Retour au tableau récapitulatif]
+
+[cols="1,1"]
+|===
+|Type |Cible
+|Personnalisé (OMA-URI) |Tous les appareils
+|===
+
+== Description
+
+Crée un compte administrateur local standardisé `PowerAdmin` sur tous les postes via OMA-URI.
+
+== Paramètres appliqués
+
+[cols="2,1,3"]
+|===
+|Paramètre |Type |OMA-URI
+
+|Add AdminPower to Local Administrators |Entier |`./Device/Vendor/MSFT/Accounts/Users/PowerAdmin/LocalUs...`
+|Create PowerAdmin password |Chaîne |`./Device/Vendor/MSFT/Accounts/Users/PowerAdmin/Passwo...`
+|===
+
+NOTE: Cette policy fonctionne en trio avec `Enable LAPS` et xref:intune/laps.adoc[LAPS] pour assurer la création, l'activation et la rotation du compte `PowerAdmin`.

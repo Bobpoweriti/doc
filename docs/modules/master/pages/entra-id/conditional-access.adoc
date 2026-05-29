@@ -43,47 +43,47 @@ Ces politiques constituent le socle de sécurité identitaire appliqué de faço
 |===
 |ID |Apps |Action |Nom de la stratégie
 
-|<<ca001,CA001>>
+|xref:entra-id/ca001.adoc[CA001]
 |All APPS
 |BLOCK
 |OUTSIDE FRANCE & TRUSTED LOCATION
 
-|<<ca002,CA002>>
+|xref:entra-id/ca002.adoc[CA002]
 |All APPS
 |BLOCK
 |LEGACY AUTHENTICATION
 
-|<<ca003,CA003>>
+|xref:entra-id/ca003.adoc[CA003]
 |All APPS
 |BLOCK
 |COREVIEW EXCEPTION
 
-|<<ca004,CA004>>
+|xref:entra-id/ca004.adoc[CA004]
 |All APPS
 |BLOCK
 |UNKNOWN & UNTRUSTED DEVICES
 
-|<<ca005,CA005>>
+|xref:entra-id/ca005.adoc[CA005]
 |Graph
 |BLOCK
 |GRAPH TOOLS
 
-|<<ca006,CA006>>
+|xref:entra-id/ca006.adoc[CA006]
 |All APPS
 |MFA
 |ADMINISTRATORS
 
-|<<ca007,CA007>>
+|xref:entra-id/ca007.adoc[CA007]
 |All APPS
 |MFA
 |USERS
 
-|<<ca008,CA008>>
+|xref:entra-id/ca008.adoc[CA008]
 |All APPS
 |MFA
 |OUTSIDE FRANCE
 
-|<<ca009,CA009>>
+|xref:entra-id/ca009.adoc[CA009]
 |All APPS
 |MFA
 |GUEST USERS
