@@ -37,6 +37,18 @@
       <div class="home-card-badge home-card-badge--soon">À venir</div>
     </div>
 
+    <div class="home-card home-card--yellow home-card--soon">
+      <div class="home-card-icon">📦</div>
+      <div class="home-card-title">Applications</div>
+      <div class="home-card-badge home-card-badge--soon">À venir</div>
+    </div>
+
+    <div class="home-card home-card--rose home-card--soon">
+      <div class="home-card-icon">📱</div>
+      <div class="home-card-title">MAM</div>
+      <div class="home-card-badge home-card-badge--soon">À venir</div>
+    </div>
+
   </div>
 </div>
 ++++
