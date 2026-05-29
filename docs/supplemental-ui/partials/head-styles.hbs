@@ -1,5 +1,37 @@
 <link rel="stylesheet" href="{{{uiRootPath}}}/css/site.css">
 <style>
+/* ===== TOPBAR NAVIGATION ===== */
+#topbar-nav.navbar-menu {
+  background: transparent;
+}
+.navbar-end .navbar-item,
+.navbar-end .navbar-link {
+  color: rgba(255,255,255,.87);
+  background: transparent;
+}
+.navbar-end .navbar-item:hover,
+.navbar-end .navbar-link:hover,
+.navbar-end .navbar-item:focus,
+.navbar-end .navbar-link:focus {
+  background: rgba(0,0,0,.25);
+  color: #fff;
+}
+.navbar-end .navbar-link::after {
+  border-color: rgba(255,255,255,.87);
+}
+.navbar-dropdown {
+  background: #3d3d3d;
+  border-top: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,.4);
+}
+.navbar-dropdown .navbar-item {
+  color: rgba(255,255,255,.87);
+}
+.navbar-dropdown .navbar-item:hover {
+  background: rgba(255,255,255,.1);
+  color: #fff;
+}
+
 /* ===== SÉPARATION CONTENU / NAV ===== */
 main.article {
   background-color: #ffffff;
