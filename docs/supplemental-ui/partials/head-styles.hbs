@@ -1,0 +1,29 @@
+<link rel="stylesheet" href="{{{uiRootPath}}}/css/site.css">
+<style>
+@media print {
+  #topbar,
+  .nav-panel,
+  .toc-panel,
+  .breadcrumbs,
+  .toolbar,
+  .edit-this-page,
+  footer.footer {
+    display: none !important;
+  }
+
+  .body {
+    display: block !important;
+  }
+
+  main.article {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 1cm 0 0 0 !important;
+  }
+
+  h1, h2, h3, h4 { page-break-after: avoid; }
+  table, .admonitionblock { page-break-inside: avoid; }
+
+  @page { margin: 2cm; }
+}
+</style>
