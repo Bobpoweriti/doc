@@ -100,6 +100,26 @@ flowchart TD
   CA007 --> OK
   CA008 --> OK
   CA009 --> OK
+
+  classDef blue   fill:#fff,stroke:#3b82f6,stroke-width:3px
+  classDef orange fill:#fff,stroke:#f97316,stroke-width:3px
+  classDef red    fill:#fff,stroke:#ef4444,stroke-width:3px
+  classDef purple fill:#fff,stroke:#a855f7,stroke-width:3px
+  classDef rose   fill:#fff,stroke:#f43f5e,stroke-width:3px
+  classDef green  fill:#fff,stroke:#22c55e,stroke-width:3px
+  classDef teal   fill:#fff,stroke:#14b8a6,stroke-width:3px
+  classDef cyan   fill:#fff,stroke:#06b6d4,stroke-width:3px
+  classDef indigo fill:#fff,stroke:#6366f1,stroke-width:3px
+
+  class CA001 blue
+  class CA002 orange
+  class CA003 red
+  class CA004 purple
+  class CA005 rose
+  class CA006 green
+  class CA007 teal
+  class CA008 cyan
+  class CA009 indigo
 ....
 
 NOTE: Plusieurs stratégies MFA peuvent s'appliquer en même temps. Entra ID retient la plus restrictive. Exemple : un administrateur qui se connecte depuis l'étranger est soumis à CA006 (1h) ET CA008 (24h) — c'est le MFA toutes les heures qui s'applique.
