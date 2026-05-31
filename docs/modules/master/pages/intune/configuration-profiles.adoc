@@ -88,17 +88,17 @@ Quand une policy n'a pas le statut *Réussi* dans Intune, suivre ce flux avant d
 ....
 flowchart TD
   A[Policy signalée non appliquée sur un poste] --> B{Statut dans Intune ?}
-  B -->|Réussi| C[Policy appliquée\nVérifier si un redémarrage est requis]
-  B -->|En attente / En cours| D[Forcer une synchronisation\nIntune › Appareils › Poste › Synchroniser]
+  B -->|Réussi| C[Policy appliquée — vérifier si redémarrage requis]
+  B -->|En attente / En cours| D["Forcer une sync — Intune > Appareils > Poste > Synchroniser"]
   D --> E{Statut après sync ?}
   E -->|Réussi| OK[Résolu]
   E -->|Erreur| F
-  B -->|Erreur| F[Consulter le rapport d erreur\nIntune › Appareils › Poste › Configuration de l appareil]
-  F --> G{Type d erreur ?}
-  G -->|Conflit| H[Identifier les deux policies en conflit\nEscalader au DT]
-  G -->|Non applicable| I[Vérifier compatibilité\nVersion Windows, statut Entra Join]
-  G -->|Autre| J[Rechercher le code erreur\ndans la documentation Microsoft]
-  B -->|Non assigné| K[Vérifier l assignation\nLa policy doit cibler Tous les appareils\nou le groupe du poste]
+  B -->|Erreur| F["Rapport d'erreur — Intune > Appareils > Poste > Configuration"]
+  F --> G{Type d'erreur ?}
+  G -->|Conflit| H[Deux policies en conflit — escalader au DT]
+  G -->|Non applicable| I[Vérifier version Windows et statut Entra Join]
+  G -->|Autre| J[Rechercher le code erreur dans la doc Microsoft]
+  B -->|Non assigné| K[Vérifier assignation — cibler Tous les appareils ou le groupe]
 ....
 
 NOTE: Le rapport de policy est accessible depuis Intune > Appareils > [nom du poste] > Configuration de l'appareil.
