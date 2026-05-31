@@ -19,7 +19,20 @@ Restreint l'accès à Microsoft Graph aux seuls comptes et ressources autorisés
 * Exception : membres du groupe `GRP_ADMINISTRATEUR`
 * Ressources système exclues : Graph Connector Service, Microsoft Graph CLI, Microsoft Graph Change Tracker, Microsoft Graph Connector Core
 
-== Objets référencés
+== Guide technicien
 
-* Groupe : `GRP_ADMINISTRATEUR`
-* Ressources : Graph Connector Service, Graph CLI, Change Tracker, Connector Core
+[%autowidth]
+|===
+|Situation |Action à réaliser
+
+|Un technicien doit utiliser Graph Explorer, Graph CLI ou un outil de scripting Graph
+|Vérifier qu'il est membre de `GRP_ADMINISTRATEUR`. +
+Si non : l'ajouter *après validation DT* — ce groupe donne des droits étendus sur le tenant.
+
+|Un utilisateur standard reçoit une erreur d'accès refusé sur un outil Graph
+|Normal et voulu. Ne pas ajouter l'utilisateur à `GRP_ADMINISTRATEUR` pour contourner — analyser pourquoi il accède à Graph.
+
+|Un outil tiers utilise l'API Graph et est bloqué
+|Vérifier si l'outil s'authentifie via un *compte utilisateur* (bloqué) ou via une *App Registration / service principal* (non impacté par CA005). +
+Si compte utilisateur : migrer vers une App Registration.
+|===

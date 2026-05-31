@@ -37,10 +37,68 @@ POWERiti — Équipe Technique
 </div>
 ++++
 
-== Notes de gestion
+== Navigation rapide par symptôme
 
-IMPORTANT: Ces politiques sont communes à tous les tenants mySerenity. Toute modification doit être validée par le Directeur Technique avant déploiement.
+[%autowidth]
+|===
+|Symptôme signalé |Policy concernée |Page
 
-NOTE: La politique `PowerAdmin` nécessite que `Enable LAPS` soit déployée en amont pour fonctionner correctement.
+|L'utilisateur voit un écran BitLocker au démarrage et n'a pas la clé
+|BitLocker - ON
+|xref:intune/bitlocker.adoc[BitLocker]
 
-WARNING: La désactivation de BitLocker nécessite une procédure documentée et un ticket Autotask approuvé.
+|Le disque n'est pas chiffré après enrôlement
+|BitLocker - ON
+|xref:intune/bitlocker.adoc[BitLocker]
+
+|Edge propose de sauvegarder un mot de passe malgré la policy
+|Configuration Edge
+|xref:intune/edge.adoc[Edge]
+
+|Une extension Edge ne s'installe pas
+|Configuration Edge
+|xref:intune/edge.adoc[Edge]
+
+|Le compte `PowerAdmin` n'existe pas sur un poste
+|Configuration PowerAdmin
+|xref:intune/poweradmin.adoc[PowerAdmin]
+
+|Impossible de se connecter en local avec `PowerAdmin`
+|Configuration PowerAdmin + LAPS
+|xref:intune/poweradmin.adoc[PowerAdmin] · xref:intune/laps.adoc[LAPS]
+
+|Le mot de passe `PowerAdmin` ne fonctionne plus
+|LAPS
+|xref:intune/laps.adoc[LAPS]
+
+|Des fichiers OneDrive ont "disparu" du poste
+|Gestion du stockage
+|xref:intune/stockage.adoc[Stockage]
+
+|Le disque est presque plein malgré la policy
+|Gestion du stockage
+|xref:intune/stockage.adoc[Stockage]
+|===
+
+== Flux de diagnostic — Policy non appliquée
+
+Quand une policy n'a pas le statut *Réussi* dans Intune, suivre ce flux avant d'escalader.
+
+[mermaid]
+....
+flowchart TD
+  A[Policy signalée non appliquée sur un poste] --> B{Statut dans Intune ?}
+  B -->|Réussi| C[Policy appliquée\nVérifier si un redémarrage est requis]
+  B -->|En attente / En cours| D[Forcer une synchronisation\nIntune › Appareils › Poste › Synchroniser]
+  D --> E{Statut après sync ?}
+  E -->|Réussi| OK[Résolu]
+  E -->|Erreur| F
+  B -->|Erreur| F[Consulter le rapport d erreur\nIntune › Appareils › Poste › Configuration de l appareil]
+  F --> G{Type d erreur ?}
+  G -->|Conflit| H[Identifier les deux policies en conflit\nEscalader au DT]
+  G -->|Non applicable| I[Vérifier compatibilité\nVersion Windows, statut Entra Join]
+  G -->|Autre| J[Rechercher le code erreur\ndans la documentation Microsoft]
+  B -->|Non assigné| K[Vérifier l assignation\nLa policy doit cibler Tous les appareils\nou le groupe du poste]
+....
+
+NOTE: Le rapport de policy est accessible depuis Intune > Appareils > [nom du poste] > Configuration de l'appareil.

@@ -29,3 +29,25 @@ Chiffrement automatique et silencieux de tous les disques.
 |===
 
 NOTE: Le PIN est délibérément désactivé pour éviter les blocages lors des interventions à distance.
+
+== Guide technicien
+
+[%autowidth]
+|===
+|Situation |Action à réaliser
+
+|L'utilisateur voit un écran BitLocker au démarrage et n'a pas sa clé de récupération
+|Récupérer la clé depuis Entra ID : entra.microsoft.com > Appareils > [nom du poste] > Clés de récupération BitLocker. +
+Communiquer la clé à l'utilisateur. Ne pas la conserver.
+
+|Le disque n'est pas chiffré sur un poste enrôlé
+|Vérifier que le TPM est actif dans le BIOS et que le poste est *Entra Joined* (pas seulement Registered). +
+Forcer une synchronisation Intune (Appareils > [poste] > Synchroniser) et patienter 5 à 10 minutes.
+
+|Un tech doit déchiffrer un disque pour une intervention matérielle
+|Ouvrir un ticket Autotask, obtenir la validation du DT. *Ne jamais désactiver BitLocker sans ce workflow.*
+
+|Un poste est remplacé et les données de l'ancien disque chiffré doivent être récupérées
+|La clé est dans Entra ID, associée à l'objet device de l'ancien poste. +
+WARNING: Si le device a déjà été supprimé d'Entra ID, la clé est perdue définitivement. Toujours récupérer la clé *avant* de supprimer un device.
+|===

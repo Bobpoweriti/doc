@@ -20,7 +20,20 @@ Impose une ré-authentification MFA toutes les 24 heures pour les connexions dep
 * Périmètre : connexions depuis l'emplacement `GEO_TEMPO-COUNTRY-ALLOWED`
 * Applicable uniquement aux utilisateurs du groupe `GRP_HORS-FRANCE-OK`
 
-== Objets référencés
+== Guide technicien
 
-* Emplacement nommé : `GEO_TEMPO-COUNTRY-ALLOWED`
-* Groupe : `GRP_HORS-FRANCE-OK`
+[%autowidth]
+|===
+|Situation |Action à réaliser
+
+|Un utilisateur dans `GRP_HORS-FRANCE-OK` se connecte depuis l'étranger
+|Il ne sera pas bloqué par xref:entra-id/ca001.adoc[CA001] et recevra une demande MFA toutes les 24h. Comportement attendu — aucune action requise.
+
+|Un utilisateur se connecte depuis un pays ajouté dans `GEO_TEMPO-COUNTRY-ALLOWED`
+|Même comportement : MFA toutes les 24h pendant le séjour. +
+Penser à retirer le pays de `GEO_TEMPO-COUNTRY-ALLOWED` dès le retour (cf. xref:entra-id/ca001.adoc[CA001]).
+
+|Un utilisateur à l'étranger se plaint du MFA trop fréquent
+|La fréquence 24h est volontairement plus contraignante hors France. +
+Si bloquant pour son activité, en discuter avec le DT.
+|===

@@ -32,3 +32,25 @@ Rotation automatique du mot de passe du compte `PowerAdmin`, stocké dans Entra 
 TIP: Le mot de passe est consultable depuis le portail Intune par les admins POWERiti : *Appareils > [nom du poste] > Mot de passe administrateur local*.
 
 WARNING: L'accès au mot de passe LAPS est réservé aux admins POWERiti. Ne jamais communiquer ce mot de passe au client.
+
+== Guide technicien
+
+[%autowidth]
+|===
+|Situation |Action à réaliser
+
+|Un tech a besoin du mot de passe administrateur local d'un poste
+|Intune > Appareils > [nom du poste] > *Mot de passe administrateur local*. +
+Valide jusqu'à la prochaine rotation (max 7 jours). Utiliser immédiatement, ne pas stocker.
+
+|Le mot de passe récupéré ne fonctionne pas
+|Il a peut-être déjà été renouvelé depuis la consultation. Retourner dans Intune pour récupérer le mot de passe actuel.
+
+|L'onglet "Mot de passe administrateur local" est absent dans Intune
+|Vérifier que *Configuration PowerAdmin* ET *LAPS* sont toutes deux appliquées avec le statut Réussi. +
+LAPS ne peut gérer que le compte `PowerAdmin` s'il existe déjà sur le poste.
+
+|Un client demande le mot de passe `PowerAdmin` pour intervenir lui-même
+|*Refuser systématiquement.* L'accès LAPS est exclusivement réservé aux admins POWERiti. +
+Si une intervention nécessite des droits admin, le tech POWERiti se connecte à distance.
+|===

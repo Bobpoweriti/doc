@@ -19,8 +19,23 @@ Bloque l'accès à l'environnement Microsoft 365 depuis n'importe quel pays situ
 * Périmètre géographique : tous les pays exclus de l'emplacement nommé `GEO_FRANCE` et non inclus dans `GEO_TEMPO-COUNTRY-ALLOWED`
 * Exception : membres du groupe `GRP_HORS-FRANCE-OK`
 
-== Objets référencés
+== Guide technicien
 
-* Emplacement nommé : `GEO_FRANCE`
-* Emplacement nommé : `GEO_TEMPO-COUNTRY-ALLOWED`
-* Groupe : `GRP_HORS-FRANCE-OK`
+[%autowidth]
+|===
+|Situation |Action à réaliser
+
+|Un utilisateur part en déplacement à l'étranger pour quelques jours
+|Ajouter temporairement le pays dans `GEO_TEMPO-COUNTRY-ALLOWED` (Entra ID > Conditional Access > Named Locations). +
+*Retirer le pays dès le retour* pour ne pas laisser l'exception ouverte.
+
+|Un utilisateur travaille régulièrement depuis l'étranger (long terme, déplacements fréquents)
+|L'ajouter au groupe `GRP_HORS-FRANCE-OK`. +
+Il ne sera plus bloqué et passera sous le MFA 24h de xref:entra-id/ca008.adoc[CA008] à la place du blocage.
+
+|Un utilisateur se retrouve bloqué alors qu'il est à l'étranger
+|Vérifier son pays de connexion (Sign-in logs Entra ID). Selon la durée : ajout temporaire dans `GEO_TEMPO-COUNTRY-ALLOWED` ou ajout dans `GRP_HORS-FRANCE-OK`. Valider avec le DT si nécessaire.
+
+|Retrait d'un utilisateur qui ne voyage plus à l'étranger
+|Le retirer de `GRP_HORS-FRANCE-OK` — il retombe sous le blocage CA001 hors France.
+|===

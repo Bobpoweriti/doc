@@ -19,6 +19,22 @@ Bloque l'utilisation des protocoles d'authentification hérités, incompatibles 
 * Protocoles visés : ActiveSync, SMTP authentifié, IMAP, POP3, et tout protocole hérité équivalent
 * Aucune exception — blocage universel sur tous les comptes
 
-== Objets référencés
+== Guide technicien
 
-* Protocoles hérités (Legacy Auth)
+[%autowidth]
+|===
+|Situation |Action à réaliser
+
+|Un utilisateur ne peut plus accéder à sa messagerie depuis un ancien client (Outlook 2013, Apple Mail POP/IMAP, etc.)
+|Blocage normal et intentionnel — ces protocoles ne supportent pas le MFA. +
+Migrer vers Outlook 365 ou tout client compatible OAuth/modern auth. +
+*Aucune exception possible sur cette politique.*
+
+|Une imprimante ou un scanner doit envoyer des e-mails via SMTP authentifié
+|Configurer l'appareil en *SMTP Relay Microsoft 365* (sans compte utilisateur) ou en *Direct Send* (port 25 vers Exchange Online). +
+Ne pas tenter de contourner la policy.
+
+|Un outil tiers ou une application métier ne peut plus s'authentifier
+|Vérifier si l'application supporte OAuth 2.0. Si non, contacter l'éditeur. +
+Si oui, reconfigurer pour utiliser OAuth. Aucune exception Legacy Auth ne sera accordée.
+|===

@@ -25,3 +25,21 @@ Crée un compte administrateur local standardisé `PowerAdmin` sur tous les post
 |===
 
 NOTE: Cette policy fonctionne en trio avec `Enable LAPS` et xref:intune/laps.adoc[LAPS] pour assurer la création, l'activation et la rotation du compte `PowerAdmin`.
+
+== Guide technicien
+
+[%autowidth]
+|===
+|Situation |Action à réaliser
+
+|Un tech a besoin d'un accès administrateur local sur un poste
+|Récupérer le mot de passe LAPS depuis Intune : Appareils > [nom du poste] > Mot de passe administrateur local. +
+Se connecter avec `PowerAdmin` et ce mot de passe. *Ne pas conserver le mot de passe* — il change tous les 7 jours.
+
+|Le compte `PowerAdmin` n'existe pas sur un poste
+|Vérifier dans Intune que *Configuration PowerAdmin* ET *LAPS* sont assignées au poste avec le statut Réussi. +
+Si l'une est en erreur, consulter le flux de diagnostic sur la xref:intune/configuration-profiles.adoc[page d'index].
+
+|Poste en cours d'enrôlement Autopilot — `PowerAdmin` absent
+|Normal si l'ESP est encore en cours. Attendre la fin de l'enrôlement complet avant de vérifier.
+|===

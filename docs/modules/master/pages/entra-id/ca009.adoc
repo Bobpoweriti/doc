@@ -20,6 +20,24 @@ Impose une ré-authentification MFA toutes les 24 heures pour tous les utilisate
 * Périmètre : tous les comptes de type Guest / utilisateurs invités B2B
 * Aucune exception prévue
 
-== Objets référencés
+== Guide technicien
 
-* Utilisateurs invités (Guest / B2B)
+[%autowidth]
+|===
+|Situation |Action à réaliser
+
+|Un utilisateur invité se plaint d'être redemandé en MFA
+|Normal — tous les Guests sont soumis au MFA toutes les 24h sans exception. +
+Le MFA est géré par leur propre organisation ou compte Microsoft personnel.
+
+|Un Guest n'arrive pas à passer le MFA
+|POWERiti ne peut pas intervenir sur les méthodes MFA d'un compte externe. +
+Rediriger l'utilisateur vers son propre service IT ou le support Microsoft.
+
+|Invitation d'un nouvel utilisateur externe (B2B)
+|L'invitation crée automatiquement un compte Guest soumis à CA009. Aucune configuration supplémentaire nécessaire. +
+S'assurer que l'invité dispose d'un compte compatible MFA avant d'envoyer l'invitation.
+
+|Un Guest demande à être exempté du MFA
+|Aucune exception prévue sur CA009. Toute demande doit être instruite en ticket Autotask et validée par le DT.
+|===

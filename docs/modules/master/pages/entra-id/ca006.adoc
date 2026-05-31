@@ -20,7 +20,22 @@ Impose une ré-authentification MFA toutes les heures pour les comptes administr
 * Périmètre : membres du groupe `GRP_ADMINISTRATEUR`
 * Exclusions : comptes CoreView 1, CoreView 2, CoreView 4fard, tenant ALSO
 
-== Objets référencés
+== Guide technicien
 
-* Groupe : `GRP_ADMINISTRATEUR`
-* Exclusions : CoreView 1, CoreView 2, CoreView 4fard, Tenant ALSO
+[%autowidth]
+|===
+|Situation |Action à réaliser
+
+|Un technicien admin se plaint d'être redemandé en MFA très fréquemment
+|Comportement normal pour tout membre de `GRP_ADMINISTRATEUR` : MFA toutes les heures. +
+*Ne pas modifier la fréquence* sans accord du DT.
+
+|Arrivée d'un nouveau technicien avec droits admin
+|L'ajouter dans `GRP_ADMINISTRATEUR`. Il sera automatiquement soumis au MFA horaire — l'informer dès l'onboarding.
+
+|Départ ou changement de rôle d'un technicien admin
+|Le retirer de `GRP_ADMINISTRATEUR` immédiatement.
+
+|Un compte de service doit être exclu de cette policy
+|Seuls CoreView et le tenant ALSO sont exclus. Toute nouvelle exclusion nécessite un ticket Autotask et la validation du DT.
+|===

@@ -8,6 +8,10 @@ antora:
     - require: '@antora/lunr-extension'
       index_latest_only: true
 
+asciidoc:
+  extensions:
+    - asciidoctor-kroki
+
 content:
   sources:
     - url: .

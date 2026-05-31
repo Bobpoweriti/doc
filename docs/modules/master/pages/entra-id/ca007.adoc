@@ -19,7 +19,20 @@ Impose une ré-authentification MFA tous les 3 mois pour l'ensemble des utilisat
 * Fréquence : tous les 3 mois (90 jours)
 * Exclusions : groupe `GRP_ADMINISTRATEUR`, comptes CoreView, tenant ALSO
 
-== Objets référencés
+== Guide technicien
 
-* Tous les utilisateurs
-* Exclusions : `GRP_ADMINISTRATEUR`, CoreView, Tenant ALSO
+[%autowidth]
+|===
+|Situation |Action à réaliser
+
+|Un utilisateur standard se plaint d'être régulièrement redemandé en MFA
+|Fréquence normale : 90 jours. Si plus fréquent, c'est qu'il change d'appareil, efface les cookies ou utilise la navigation privée. +
+Expliquer le comportement — aucune action corrective nécessaire.
+
+|Un utilisateur est redemandé en MFA toutes les heures alors qu'il n'est pas admin
+|Vérifier qu'il n'est pas membre de `GRP_ADMINISTRATEUR` par erreur. Le retirer si c'est le cas.
+
+|Un utilisateur n'arrive plus à passer le MFA (téléphone perdu, changement de mobile)
+|Réinitialiser ses méthodes MFA depuis Entra ID > Utilisateurs > [compte] > Méthodes d'authentification. +
+L'utilisateur pourra re-enregistrer son application MFA à la prochaine connexion.
+|===

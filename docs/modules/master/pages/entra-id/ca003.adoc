@@ -19,7 +19,19 @@ Restreint les connexions des comptes de service CoreView à leur plage d'adresse
 * S'applique à tous les comptes CoreView du tenant
 * Bloque toute connexion effectuée depuis un emplacement autre que `IP_COREVIEW`
 
-== Objets référencés
+== Guide technicien
 
-* Emplacement nommé : `IP_COREVIEW`
-* Comptes CoreView
+[%autowidth]
+|===
+|Situation |Action à réaliser
+
+|CoreView ne parvient plus à se connecter au tenant
+|Vérifier si les IPs sortantes de CoreView ont changé (mise à jour d'infrastructure). +
+Récupérer la liste IP à jour auprès du support CoreView, puis mettre à jour `IP_COREVIEW` dans Entra ID > Conditional Access > Named Locations.
+
+|Mise à jour planifiée de l'infrastructure CoreView
+|Récupérer les nouvelles plages IP *avant* la bascule et les renseigner dans `IP_COREVIEW`. Évite toute coupure de service.
+
+|Un compte CoreView semble bloqué sans raison
+|Vérifier dans les Sign-in logs Entra ID l'IP source utilisée par le compte. Comparer avec le contenu de `IP_COREVIEW`. Mettre à jour si l'IP ne correspond pas.
+|===

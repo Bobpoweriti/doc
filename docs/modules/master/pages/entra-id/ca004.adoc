@@ -19,7 +19,24 @@ Bloque l'accès à Microsoft 365 pour tout appareil non reconnu par Microsoft En
 * Appareils autorisés : Entra Joined, Entra Registered, Hybrid Azure AD Joined
 * Exceptions : appareils Android et iOS (gérés via MAM/Intune), utilisateurs invités (Guests)
 
-== Objets référencés
+== Guide technicien
 
-* Entra ID Join status
-* Exceptions : Android, iOS, Guests
+[%autowidth]
+|===
+|Situation |Action à réaliser
+
+|Un utilisateur est bloqué depuis son PC professionnel
+|Vérifier dans Entra ID > Appareils que l'appareil est *Entra Joined*, *Entra Registered* ou *Hybrid Azure AD Joined*. +
+Si absent : enrôler via `dsregcmd /join` ou via Paramètres Windows > Accès professionnel ou scolaire.
+
+|Un utilisateur tente de se connecter depuis son PC personnel
+|Blocage normal et voulu. Un PC personnel ne peut pas être autorisé ici. +
+L'utilisateur doit utiliser un appareil géré par l'entreprise.
+
+|Un utilisateur sur Android ou iOS est bloqué
+|Android et iOS sont exclus *à condition* que l'application soit gérée via Intune/MAM (ex. Outlook Mobile). +
+Vérifier l'inscription de l'application dans Intune. Le client natif non géré est bloqué.
+
+|Nouveau PC livré à un utilisateur
+|Enrôler dans Entra ID / Intune *avant* de remettre le poste à l'utilisateur, pour éviter tout blocage dès la première connexion.
+|===

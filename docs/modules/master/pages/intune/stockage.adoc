@@ -27,3 +27,22 @@ Gestion automatique de l'espace disque via l'Assistant Stockage Windows.
 |Cadence globale de l'Assistant Stockage |7 jours
 |Seuil nettoyage corbeille |60 jours
 |===
+
+== Guide technicien
+
+[%autowidth]
+|===
+|Situation |Action à réaliser
+
+|Des fichiers OneDrive ont "disparu" du poste d'un utilisateur
+|L'Assistant Stockage supprime les fichiers cloud non ouverts depuis plus de *10 jours* — comportement normal. +
+Les fichiers sont toujours dans OneDrive en ligne. L'utilisateur les retrouve depuis onedrive.com ou en les rouvrant depuis l'Explorateur.
+
+|Le disque est presque plein malgré la policy
+|L'Assistant tourne tous les 7 jours. Pour un nettoyage immédiat : +
+Paramètres Windows > Système > Stockage > Assistant Stockage > *Exécuter l'Assistant Stockage maintenant*.
+
+|Un utilisateur veut empêcher la suppression automatique de ses fichiers OneDrive locaux
+|Non configurable individuellement sans modifier la policy. +
+Expliquer que seule la copie locale est supprimée — le fichier reste dans OneDrive et se re-télécharge à l'ouverture.
+|===

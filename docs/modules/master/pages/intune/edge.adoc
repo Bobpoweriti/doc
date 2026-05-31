@@ -37,3 +37,22 @@ Durcissement du navigateur Edge et désactivation du gestionnaire de mots de pas
 |===
 
 IMPORTANT: Le gestionnaire de mots de passe Edge est entièrement désactivé. Keeper est le seul gestionnaire autorisé sur les postes mySerenity.
+
+== Guide technicien
+
+[%autowidth]
+|===
+|Situation |Action à réaliser
+
+|Un utilisateur veut sauvegarder ses mots de passe dans Edge
+|Le gestionnaire Edge est désactivé par policy. +
+Orienter l'utilisateur vers *Keeper*, seul gestionnaire autorisé sur les postes mySerenity.
+
+|Une extension Edge ne s'installe pas
+|Vérifier si l'ID de l'extension est dans la liste autorisée de la policy. +
+Si l'extension est légitime et manquante, soumettre une demande au DT.
+
+|Les paramètres Edge d'un poste semblent différents des autres
+|Vérifier si l'utilisateur est connecté à Edge avec un *compte Microsoft personnel*. +
+Les policies Intune s'appliquent uniquement au profil professionnel Edge — pas au profil personnel.
+|===

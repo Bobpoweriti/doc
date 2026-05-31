@@ -57,10 +57,49 @@ POWERiti — Équipe Technique
 </div>
 ++++
 
-== Notes de gestion
+== Flux de décision — Évaluation d'une connexion
 
-IMPORTANT: Les emplacements nommés (`GEO_FRANCE`, `GEO_TEMPO-COUNTRY-ALLOWED`, `IP_COREVIEW`) doivent être maintenus à jour dans *Microsoft Entra ID > Conditional Access > Named Locations*.
+Entra ID évalue toutes les stratégies CA simultanément à chaque tentative de connexion. Ce diagramme représente la logique dans l'ordre de priorité : les blocages sont traités en premier, les exigences MFA s'appliquent ensuite aux connexions qui ont passé tous les contrôles.
 
-WARNING: Les groupes `GRP_ADMINISTRATEUR` et `GRP_HORS-FRANCE-OK` sont des pivots d'exception — leur composition doit faire l'objet d'une revue régulière.
+[mermaid]
+....
+flowchart TD
+  START([Tentative de connexion]) --> CA001
 
-NOTE: Toute demande d'exception doit être instruite en ticket Autotask et validée par le Directeur Technique.
+  CA001{"CA001 — Localisation\nPays de connexion ?"}
+  CA001 -->|"France — GEO_FRANCE\nou GEO_TEMPO-COUNTRY-ALLOWED\nou GRP_HORS-FRANCE-OK"| CA002
+  CA001 -->|Pays non autorisé| BL([BLOCAGE])
+
+  CA002{"CA002 — Protocole\nAuthentification moderne ?"}
+  CA002 -->|"OAuth 2.0 — Modern Auth"| CA003
+  CA002 -->|"Legacy Auth — IMAP, POP3, SMTP, ActiveSync"| BL
+
+  CA003{"CA003 — Compte CoreView ?\nSi oui — IP autorisée ?"}
+  CA003 -->|Non CoreView| CA004
+  CA003 -->|"CoreView + IP_COREVIEW"| CA004
+  CA003 -->|"CoreView + autre IP"| BL
+
+  CA004{"CA004 — Appareil\nReconnu par Entra ID ?"}
+  CA004 -->|"Entra Joined / Registered / Hybrid"| CA005
+  CA004 -->|"Android / iOS géré MAM\nou Guest"| CA005
+  CA004 -->|Inconnu ou personnel non géré| BL
+
+  CA005{"CA005 — Accès Graph ?\nSi oui — autorisé ?"}
+  CA005 -->|Pas Graph| MFA
+  CA005 -->|"Graph + GRP_ADMINISTRATEUR\nou ressource système"| MFA
+  CA005 -->|Graph sans autorisation| BL
+
+  MFA(["Blocages levés\nContrôles MFA"])
+
+  MFA --> CA006["CA006 — Admins\nMFA toutes les heures"]
+  MFA --> CA007["CA007 — Utilisateurs\nMFA tous les 90 jours"]
+  MFA --> CA008["CA008 — Hors France autorisé\nMFA toutes les 24h"]
+  MFA --> CA009["CA009 — Guests B2B\nMFA toutes les 24h"]
+
+  CA006 --> OK([Accès accordé])
+  CA007 --> OK
+  CA008 --> OK
+  CA009 --> OK
+....
+
+NOTE: Plusieurs stratégies MFA peuvent s'appliquer en même temps. Entra ID retient la plus restrictive. Exemple : un administrateur qui se connecte depuis l'étranger est soumis à CA006 (1h) ET CA008 (24h) — c'est le MFA toutes les heures qui s'applique.
