@@ -28,8 +28,6 @@ Chiffrement automatique et silencieux de tous les disques.
 |Chiffrement utilisateur standard |Désactivé
 |===
 
-NOTE: Le PIN est délibérément désactivé pour éviter les blocages lors des interventions à distance.
-
 == Guide technicien
 
 [%autowidth]
