@@ -5,8 +5,8 @@ POWERiti — Équipe Technique
 :toc-title: Sommaire
 :toclevels: 3
 :icons: font
-:version: 1.0
-:revdate: 28/05/2026
+:version: 1.1
+:revdate: 31/05/2026
 :langue: fr
 :sectnums:
 
@@ -49,6 +49,74 @@ Ces politiques constituent le socle commun appliqué de façon standardisée à 
 |Tous les appareils
 |===
 
+== Navigation rapide par symptôme
+
+Si tu arrives sur ce document suite à un appel support, repère le symptôme et va directement à la section concernée.
+
+[%autowidth]
+|===
+|Symptôme signalé |Policy concernée |Section
+
+|L'utilisateur voit un écran BitLocker au démarrage et n'a pas la clé
+|BitLocker - ON
+|<<_bitlocker_on>>
+
+|Le disque d'un poste n'est pas chiffré après enrôlement
+|BitLocker - ON
+|<<_bitlocker_on>>
+
+|Edge propose de sauvegarder un mot de passe malgré la policy
+|Configuration Edge
+|<<_configuration_edge>>
+
+|Une extension Edge ne s'installe pas
+|Configuration Edge
+|<<_configuration_edge>>
+
+|Le compte `PowerAdmin` n'existe pas sur un poste
+|Configuration PowerAdmin
+|<<_configuration_poweradmin>>
+
+|Impossible de se connecter en local avec `PowerAdmin`
+|Configuration PowerAdmin + LAPS
+|<<_configuration_poweradmin>>, <<_laps>>
+
+|Le mot de passe `PowerAdmin` ne fonctionne plus
+|LAPS
+|<<_laps>>
+
+|Des fichiers OneDrive ont "disparu" du poste
+|Gestion du stockage
+|<<_gestion_du_stockage>>
+
+|Le disque est presque plein malgré la policy
+|Gestion du stockage
+|<<_gestion_du_stockage>>
+|===
+
+== Flux de diagnostic — Policy non appliquée
+
+Quand une policy n'a pas le statut *Réussi* dans Intune, suivre ce flux avant d'escalader.
+
+[mermaid]
+....
+flowchart TD
+  A[Policy signalée non appliquée sur un poste] --> B{Statut dans Intune ?}
+  B -->|Réussi| C[Policy appliquée\nVérifier si un redémarrage est requis]
+  B -->|En attente / En cours| D[Forcer une synchronisation\nIntune › Appareils › Poste › Synchroniser]
+  D --> E{Statut après sync ?}
+  E -->|Réussi| OK[Résolu]
+  E -->|Erreur| F
+  B -->|Erreur| F[Consulter le rapport d'erreur\nIntune › Appareils › Poste › Configuration de l'appareil]
+  F --> G{Type d'erreur ?}
+  G -->|Conflit| H[Identifier les deux policies en conflit\nSignalées dans le rapport\nEscalader au DT]
+  G -->|Non applicable| I[Vérifier compatibilité\nVersion Windows, statut Entra Join]
+  G -->|Autre| J[Rechercher le code erreur\ndans la documentation Microsoft]
+  B -->|Non assigné| K[Vérifier l'assignation\nLa policy doit cibler Tous les appareils\nou le groupe du poste]
+....
+
+NOTE: Le rapport de policy est accessible depuis Intune > Appareils > [nom du poste] > Configuration de l'appareil. Chaque ligne indique le statut par profil et par paramètre.
+
 == Détail des politiques
 
 === Bitlocker - ON
@@ -82,6 +150,29 @@ Chiffrement automatique et silencieux de tous les disques.
 |===
 
 NOTE: Le PIN est délibérément désactivé pour éviter les blocages lors des interventions à distance.
+
+*Guide technicien*
+
+[%autowidth]
+|===
+|Situation |Action à réaliser
+
+|L'utilisateur voit un écran BitLocker au démarrage et n'a pas sa clé de récupération
+|Récupérer la clé depuis Entra ID : entra.microsoft.com > Appareils > [nom du poste] > Clés de récupération BitLocker. +
+Communiquer la clé à l'utilisateur. Ne pas la conserver ni la noter ailleurs.
+
+|Le disque n'est pas chiffré sur un poste enrôlé
+|Vérifier que le TPM est actif dans le BIOS du poste. Vérifier que le poste est *Entra Joined* (pas seulement Registered). +
+Forcer une synchronisation Intune (Appareils > [poste] > Synchroniser) et patienter 5 à 10 minutes.
+
+|Un tech doit déchiffrer un disque pour une intervention matérielle (remplacement SSD, etc.)
+|Ouvrir un ticket Autotask, obtenir la validation du Directeur Technique. +
+*Ne jamais désactiver BitLocker sans ce workflow validé.*
+
+|Un poste est remplacé et les données de l'ancien disque chiffré doivent être récupérées
+|La clé de récupération est dans Entra ID, associée à l'objet device de l'ancien poste. +
+WARNING: Si le device a déjà été supprimé d'Entra ID avant récupération de la clé, la clé est perdue définitivement. Toujours récupérer la clé *avant* de supprimer un device d'Entra ID.
+|===
 
 ---
 
@@ -141,6 +232,29 @@ Durcissement du navigateur Edge et désactivation du gestionnaire de mots de pas
 
 IMPORTANT: Le gestionnaire de mots de passe Edge est entièrement désactivé. Keeper est le seul gestionnaire autorisé sur les postes mySerenity.
 
+*Guide technicien*
+
+[%autowidth]
+|===
+|Situation |Action à réaliser
+
+|Un utilisateur veut sauvegarder ses mots de passe dans Edge
+|Le gestionnaire Edge est désactivé par policy — comportement normal. +
+Orienter l'utilisateur vers *Keeper*, seul gestionnaire de mots de passe autorisé sur les postes mySerenity.
+
+|Une extension Edge ne s'installe pas pour un utilisateur
+|Vérifier si l'ID de l'extension figure dans la liste autorisée de la policy. +
+Si l'extension est légitime et manquante, soumettre une demande au Directeur Technique. Ne pas modifier la policy sans validation.
+
+|Les paramètres Edge d'un poste semblent différents des autres (moteur de recherche, cookies, etc.)
+|Vérifier si l'utilisateur est connecté à Edge avec un *compte Microsoft personnel*. +
+Les policies Intune s'appliquent uniquement au profil professionnel Edge (compte Entra ID). Le profil personnel n'est pas contrôlé.
+
+|Edge affiche encore la suggestion "Mot de passe fort" malgré la policy
+|Vérifier que la policy "Configuration Edge" est assignée aux *utilisateurs* (pas seulement aux appareils) et qu'elle a le statut Réussi pour ce compte. +
+Forcer une synchronisation Intune si nécessaire.
+|===
+
 ---
 
 === Configuration PowerAdmin
@@ -164,6 +278,26 @@ Crée un compte administrateur local standardisé `PowerAdmin` sur tous les post
 |===
 
 NOTE: Cette policy fonctionne en trio avec `Enable LAPS` et `LAPS` pour assurer la création, l'activation et la rotation du compte `PowerAdmin`.
+
+*Guide technicien*
+
+[%autowidth]
+|===
+|Situation |Action à réaliser
+
+|Un tech a besoin d'un accès administrateur local sur un poste (intervention, dépannage)
+|Récupérer le mot de passe LAPS depuis Intune : Appareils > [nom du poste] > Mot de passe administrateur local. +
+Se connecter avec le compte `PowerAdmin` et ce mot de passe. +
+*Ne pas conserver ni noter ce mot de passe* — il change tous les 7 jours.
+
+|Le compte `PowerAdmin` n'existe pas sur un poste
+|Vérifier dans Intune que les policies *Configuration PowerAdmin* ET *LAPS* sont toutes deux assignées au poste et ont le statut Réussi. +
+Si l'une est en erreur, consulter le rapport de policy (cf. flux de diagnostic section 3).
+
+|Un poste est en cours d'enrôlement Autopilot et `PowerAdmin` n'est pas encore créé
+|Normal si l'ESP (Enrollment Status Page) est encore en cours. Attendre la fin de l'enrôlement complet avant de vérifier. +
+Si l'ESP est terminé et le compte absent, investiguer l'état de la policy dans Intune.
+|===
 
 ---
 
@@ -195,6 +329,26 @@ Gestion automatique de l'espace disque via l'Assistant Stockage Windows.
 
 |Seuil nettoyage corbeille
 |60 jours
+|===
+
+*Guide technicien*
+
+[%autowidth]
+|===
+|Situation |Action à réaliser
+
+|Des fichiers OneDrive ont "disparu" du poste d'un utilisateur
+|L'Assistant Stockage supprime automatiquement les fichiers cloud non ouverts depuis plus de *10 jours* — comportement normal et voulu. +
+Les fichiers sont toujours présents dans OneDrive en ligne. L'utilisateur peut les retrouver depuis onedrive.com ou en les rouvrant depuis l'Explorateur (ils se re-téléchargent à la demande).
+
+|Le disque est presque plein malgré la policy
+|L'Assistant tourne tous les 7 jours. Pour un nettoyage immédiat, déclencher manuellement depuis le poste : +
+Paramètres Windows > Système > Stockage > Assistant Stockage > *Exécuter l'Assistant Stockage maintenant*. +
+Vérifier aussi que la corbeille est vidée (seuil : 60 jours).
+
+|Un utilisateur veut empêcher la suppression automatique de ses fichiers OneDrive locaux
+|Ce n'est pas configurable individuellement sans modifier la policy. +
+Expliquer à l'utilisateur : seule la copie locale est supprimée, le fichier reste dans OneDrive. S'il ouvre régulièrement ses fichiers, ils ne seront jamais supprimés du poste.
 |===
 
 ---
@@ -236,6 +390,29 @@ TIP: Le mot de passe est consultable depuis le portail Intune par les admins POW
 
 WARNING: L'accès au mot de passe LAPS est réservé aux admins POWERiti. Ne jamais communiquer ce mot de passe au client.
 
+*Guide technicien*
+
+[%autowidth]
+|===
+|Situation |Action à réaliser
+
+|Un tech a besoin du mot de passe administrateur local d'un poste
+|Intune > Appareils > [nom du poste] > *Mot de passe administrateur local*. +
+Le mot de passe affiché est valide pour 7 jours maximum. L'utiliser immédiatement, ne pas le stocker.
+
+|Le mot de passe récupéré dans Intune ne fonctionne pas
+|Le mot de passe a peut-être déjà été renouvelé depuis sa consultation. +
+Retourner dans Intune pour récupérer le mot de passe actuel et réessayer.
+
+|LAPS ne semble pas configuré sur un poste (onglet "Mot de passe administrateur local" absent)
+|Vérifier que les deux policies sont appliquées avec le statut Réussi : *Configuration PowerAdmin* (crée le compte) ET *LAPS* (gère la rotation). +
+LAPS ne peut gérer que le compte `PowerAdmin` s'il existe déjà sur le poste.
+
+|Un client ou un utilisateur demande le mot de passe `PowerAdmin` pour intervenir lui-même
+|*Refuser systématiquement.* L'accès LAPS est exclusivement réservé aux admins POWERiti. +
+Si une intervention nécessite des droits admin, le tech POWERiti se connecte à distance et réalise l'action en direct.
+|===
+
 ---
 
 == Notes de gestion
@@ -251,6 +428,10 @@ WARNING: La désactivation de BitLocker sur un poste nécessite une procédure d
 [cols="1,1,3"]
 |===
 |Version |Date |Modification
+
+|1.1
+|31/05/2026
+|Ajout : navigation par symptôme, flux de diagnostic, guides technicien par policy
 
 |1.0
 |28/05/2026

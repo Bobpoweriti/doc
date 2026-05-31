@@ -5,8 +5,8 @@ POWERiti — Équipe Technique
 :toc-title: Sommaire
 :toclevels: 3
 :icons: font
-:version: 1.0
-:revdate: 13/05/2026
+:version: 1.1
+:revdate: 31/05/2026
 :langue: fr
 :sectnums:
 
@@ -109,11 +109,26 @@ Bloque l'accès à l'environnement Microsoft 365 depuis n'importe quel pays situ
 * Périmètre géographique : tous les pays exclus de l'emplacement nommé `GEO_FRANCE` et non inclus dans `GEO_TEMPO-COUNTRY-ALLOWED`
 * Exception : membres du groupe utilisateurs `GRP_HORS-FRANCE-OK`
 
-*Objets référencés*
+*Guide technicien*
 
-* Emplacement nommé : `GEO_FRANCE`
-* Emplacement nommé : `GEO_TEMPO-COUNTRY-ALLOWED`
-* Groupe : `GRP_HORS-FRANCE-OK`
+[%autowidth]
+|===
+|Situation |Action à réaliser
+
+|Un utilisateur part en déplacement à l'étranger pour quelques jours
+|Ajouter temporairement le pays concerné dans l'emplacement nommé `GEO_TEMPO-COUNTRY-ALLOWED` (Entra ID > Conditional Access > Named Locations). +
+*Retirer le pays dès le retour* pour ne pas laisser une exception ouverte indéfiniment.
+
+|Un utilisateur travaille régulièrement depuis l'étranger (télétravail à long terme, déplacements fréquents hors France)
+|L'ajouter au groupe `GRP_HORS-FRANCE-OK`. +
+Il ne sera plus bloqué et bénéficiera du MFA renforcé 24h (CA008) à la place du blocage.
+
+|Un utilisateur se retrouve bloqué alors qu'il est à l'étranger
+|Vérifier d'abord son pays de connexion. Selon la durée du séjour : ajout temporaire dans `GEO_TEMPO-COUNTRY-ALLOWED` ou ajout dans `GRP_HORS-FRANCE-OK`. Valider avec le Directeur Technique si nécessaire.
+
+|Retrait d'un utilisateur qui ne voyage plus à l'étranger
+|Le retirer de `GRP_HORS-FRANCE-OK` — il retombera sous le blocage CA001 en dehors de France.
+|===
 
 ---
 
@@ -127,9 +142,26 @@ Bloque l'utilisation des protocoles d'authentification hérités, incompatibles 
 * Protocoles visés : ActiveSync, SMTP authentifié, IMAP, POP3, et tout protocole hérité équivalent
 * Aucune exception — blocage universel sur tous les comptes
 
-*Objets référencés*
+*Guide technicien*
 
-* Protocoles hérités (Legacy Auth)
+[%autowidth]
+|===
+|Situation |Action à réaliser
+
+|Un utilisateur se plaint de ne plus pouvoir accéder à sa messagerie depuis son ancien client mail (Outlook 2013 ou antérieur, Apple Mail configuré en POP/IMAP, etc.)
+|Le blocage est normal et intentionnel. Ces protocoles ne supportent pas le MFA. +
+Solution : migrer l'utilisateur vers Outlook 365 ou tout client compatible OAuth/modern auth. +
+*Aucune exception n'est possible sur cette politique.*
+
+|Une imprimante ou un scanner doit envoyer des e-mails via SMTP authentifié
+|Ne pas tenter de contourner cette politique. Configurer l'appareil en *SMTP Relay Microsoft 365* (sans authentification par compte utilisateur) ou en *Direct Send* (port 25 vers les serveurs Exchange Online). +
+Consulter la documentation Microsoft sur les options d'envoi SMTP pour les appareils multifonctions.
+
+|Un outil tiers ou une application métier ne peut plus s'authentifier
+|Vérifier si l'application supporte l'authentification moderne (OAuth 2.0). +
+Si non, contacter l'éditeur pour une mise à jour. +
+Si oui, reconfigurer l'application pour utiliser OAuth. Aucune exception Legacy Auth ne sera accordée.
+|===
 
 ---
 
@@ -143,10 +175,25 @@ Restreint les connexions des comptes de service CoreView à leur plage d'adresse
 * S'applique à tous les comptes CoreView du tenant
 * Bloque toute connexion effectuée depuis un emplacement autre que `IP_COREVIEW`
 
-*Objets référencés*
+*Guide technicien*
 
-* Emplacement nommé : `IP_COREVIEW`
-* Comptes CoreView
+[%autowidth]
+|===
+|Situation |Action à réaliser
+
+|CoreView ne parvient plus à se connecter au tenant (erreurs de connexion des comptes de service CoreView)
+|Vérifier si les adresses IP sortantes de CoreView ont changé (cas lors de mises à jour d'infrastructure CoreView). +
+Se rapprocher du support CoreView pour obtenir la liste IP à jour, puis mettre à jour l'emplacement nommé `IP_COREVIEW` dans Entra ID > Conditional Access > Named Locations.
+
+|Mise à jour planifiée de l'infrastructure CoreView
+|Anticiper en récupérant les nouvelles plages IP auprès de CoreView *avant* la bascule, et les renseigner dans `IP_COREVIEW`. Évite toute coupure de service.
+
+|Un compte CoreView semble bloqué sans raison apparente
+|Vérifier dans les journaux de connexion Entra ID (Sign-in logs) l'IP source utilisée par le compte. Comparer avec le contenu de `IP_COREVIEW`. Si l'IP ne correspond pas, mettre à jour la liste.
+
+|Ajout d'un nouveau compte de service CoreView
+|Le compte doit être identifié comme compte CoreView dans la politique. Vérifier avec CoreView ou dans la configuration du tenant que le compte est bien pris en compte par CA003.
+|===
 
 ---
 
@@ -160,10 +207,30 @@ Bloque l'accès à Microsoft 365 pour tout appareil non reconnu par Microsoft En
 * Appareils autorisés : Entra Joined, Entra Registered, Hybrid Azure AD Joined
 * Exceptions : appareils Android et iOS (gérés via MAM/Intune), utilisateurs invités (Guests)
 
-*Objets référencés*
+*Guide technicien*
 
-* Entra ID Join status
-* Exceptions : Android, iOS, Guests
+[%autowidth]
+|===
+|Situation |Action à réaliser
+
+|Un utilisateur est bloqué depuis son PC professionnel
+|Vérifier dans Entra ID > Devices que l'appareil est bien en statut *Entra Joined*, *Entra Registered*, ou *Hybrid Azure AD Joined*. +
+Si l'appareil n'apparaît pas : procéder à l'enrôlement via la commande `dsregcmd /join` ou via les paramètres Windows (Accès professionnel ou scolaire).
+
+|Un utilisateur tente de se connecter depuis son PC personnel (non géré)
+|Le blocage est normal et voulu. Un PC personnel ne peut pas être autorisé dans cette politique. +
+L'utilisateur doit utiliser un appareil géré par l'entreprise, ou se connecter via le portail web (navigateur) depuis un poste conforme.
+
+|Un utilisateur sur smartphone Android ou iOS est bloqué
+|Android et iOS sont exclus du blocage *à condition* que l'application utilisée soit gérée via Intune/MAM (ex. Outlook Mobile). +
+Vérifier que l'application est bien inscrite dans Intune. Si l'utilisateur utilise le client natif non géré, il sera bloqué.
+
+|Un utilisateur invité (Guest) est bloqué depuis son propre appareil
+|Les Guests sont exclus de CA004. Si un Guest est bloqué, vérifier si une autre politique s'applique (CA001 géolocalisation, CA009 MFA).
+
+|Nouveau PC livré à un utilisateur
+|Enrôler l'appareil dans Entra ID / Intune *avant* de remettre le poste à l'utilisateur, pour éviter tout blocage dès la première connexion.
+|===
 
 ---
 
@@ -177,10 +244,26 @@ Restreint l'accès à Microsoft Graph aux seuls comptes et ressources autorisés
 * Exception : membres du groupe `GRP_ADMINISTRATEUR`
 * Ressources système exclues : Graph Connector Service, Microsoft Graph CLI, Microsoft Graph Change Tracker, Microsoft Graph Connector Core
 
-*Objets référencés*
+*Guide technicien*
 
-* Groupe : `GRP_ADMINISTRATEUR`
-* Ressources : Graph Connector Service, Graph CLI, Change Tracker, Connector Core
+[%autowidth]
+|===
+|Situation |Action à réaliser
+
+|Un technicien doit utiliser Microsoft Graph Explorer, Graph CLI, ou un outil de scripting Graph
+|Vérifier qu'il est membre de `GRP_ADMINISTRATEUR`. +
+Si non : l'ajouter *après validation par le Directeur Technique* — ce groupe donne des droits étendus sur l'ensemble du tenant.
+
+|Un utilisateur standard reçoit une erreur d'accès refusé sur un outil Graph
+|Normal et voulu. L'accès à Graph est réservé aux administrateurs. Ne pas ajouter l'utilisateur à `GRP_ADMINISTRATEUR` pour contourner ce blocage — analyser pourquoi il tente d'accéder à Graph.
+
+|Un outil tiers (script, intégration) utilise l'API Graph et est bloqué
+|Vérifier si l'outil s'authentifie via un *compte utilisateur* (bloqué) ou via une *App Registration / service principal* (non impacté par CA005). +
+Si l'outil utilise un compte utilisateur, migrer vers une App Registration avec les permissions Graph nécessaires.
+
+|Un nouveau technicien rejoint l'équipe et doit accéder à Graph
+|L'ajouter dans `GRP_ADMINISTRATEUR` après validation. Il sera alors soumis à CA006 (MFA toutes les heures) en plus de l'accès Graph.
+|===
 
 ---
 
@@ -197,10 +280,25 @@ Impose une ré-authentification MFA toutes les heures pour les comptes administr
 * Périmètre : membres du groupe `GRP_ADMINISTRATEUR`
 * Exclusions : comptes CoreView 1, CoreView 2, CoreView 4fard, tenant ALSO
 
-*Objets référencés*
+*Guide technicien*
 
-* Groupe : `GRP_ADMINISTRATEUR`
-* Exclusions : CoreView 1, CoreView 2, CoreView 4fard, Tenant ALSO
+[%autowidth]
+|===
+|Situation |Action à réaliser
+
+|Un technicien administrateur se plaint d'être re-demandé en MFA très fréquemment
+|C'est le comportement normal et attendu pour tout membre de `GRP_ADMINISTRATEUR` : ré-authentification MFA toutes les heures. +
+*Ne pas modifier la fréquence* sans accord du Directeur Technique.
+
+|Arrivée d'un nouveau technicien avec des droits admin
+|L'ajouter dans `GRP_ADMINISTRATEUR`. Il sera automatiquement soumis au MFA horaire. L'informer de cette contrainte dès l'onboarding.
+
+|Départ ou changement de rôle d'un technicien admin
+|Le retirer de `GRP_ADMINISTRATEUR` immédiatement. Il perdra les droits admin et ne sera plus soumis au MFA horaire.
+
+|Un compte de service a besoin d'être exclu de cette politique
+|Seuls les comptes CoreView et le tenant ALSO sont exclus. Toute nouvelle exclusion doit être instruite en ticket Autotask et validée par le Directeur Technique. Ne pas modifier la liste sans validation.
+|===
 
 ---
 
@@ -214,10 +312,22 @@ Impose une ré-authentification MFA tous les 3 mois pour l'ensemble des utilisat
 * Fréquence : tous les 3 mois (90 jours)
 * Exclusions : groupe `GRP_ADMINISTRATEUR`, comptes CoreView, tenant ALSO
 
-*Objets référencés*
+*Guide technicien*
 
-* Tous les utilisateurs
-* Exclusions : `GRP_ADMINISTRATEUR`, CoreView, Tenant ALSO
+[%autowidth]
+|===
+|Situation |Action à réaliser
+
+|Un utilisateur standard se plaint d'être régulièrement demandé en MFA
+|La fréquence normale est tous les 90 jours. Si l'utilisateur est sollicité plus souvent, c'est généralement parce qu'il change d'appareil, efface les cookies de son navigateur, ou utilise la navigation privée. +
+Expliquer ce comportement à l'utilisateur — aucune action corrective n'est nécessaire.
+
+|Un utilisateur est demandé en MFA toutes les heures alors qu'il n'est pas admin
+|Vérifier qu'il n'est pas membre de `GRP_ADMINISTRATEUR` par erreur. Si c'est le cas, le retirer du groupe après vérification de son rôle réel.
+
+|Un utilisateur n'arrive plus à passer le MFA (application authentificateur perdue, changement de téléphone)
+|Réinitialiser les méthodes MFA de l'utilisateur depuis Entra ID > Users > Authentication methods. L'utilisateur pourra re-enregistrer son application MFA à la prochaine connexion.
+|===
 
 ---
 
@@ -232,10 +342,23 @@ Impose une ré-authentification MFA toutes les 24 heures pour les connexions dep
 * Périmètre : connexions depuis l'emplacement `GEO_TEMPO-COUNTRY-ALLOWED`
 * Applicable uniquement aux utilisateurs du groupe `GRP_HORS-FRANCE-OK`
 
-*Objets référencés*
+*Guide technicien*
 
-* Emplacement nommé : `GEO_TEMPO-COUNTRY-ALLOWED`
-* Groupe : `GRP_HORS-FRANCE-OK`
+[%autowidth]
+|===
+|Situation |Action à réaliser
+
+|Un utilisateur est dans `GRP_HORS-FRANCE-OK` et se connecte depuis l'étranger
+|Il ne sera pas bloqué par CA001 et recevra une demande de MFA toutes les 24h. C'est le comportement attendu — aucune action requise.
+
+|Un utilisateur est connecté depuis un pays ajouté temporairement dans `GEO_TEMPO-COUNTRY-ALLOWED`
+|Même comportement : MFA toutes les 24h pendant la durée du séjour. +
+Penser à retirer le pays de `GEO_TEMPO-COUNTRY-ALLOWED` dès que ce n'est plus nécessaire (cf. CA001).
+
+|Un utilisateur à l'étranger se plaint d'être demandé en MFA trop souvent
+|La fréquence de 24h est volontairement plus contraignante pour les connexions hors France. +
+Si l'utilisateur travaille régulièrement à l'étranger et que cette fréquence est bloquante pour son activité, en discuter avec le Directeur Technique.
+|===
 
 ---
 
@@ -250,21 +373,76 @@ Impose une ré-authentification MFA toutes les 24 heures pour tous les utilisate
 * Périmètre : tous les comptes de type Guest / utilisateurs invités B2B
 * Aucune exception prévue
 
-*Objets référencés*
+*Guide technicien*
 
-* Utilisateurs invités (Guest / B2B)
+[%autowidth]
+|===
+|Situation |Action à réaliser
+
+|Un utilisateur invité (partenaire, prestataire, client) se plaint d'être demandé en MFA
+|C'est normal — tous les Guests sont soumis au MFA toutes les 24h sans exception. +
+Leur expliquer que c'est une exigence de sécurité du tenant et qu'ils doivent configurer le MFA sur leur propre compte Microsoft ou Entra ID.
+
+|Un utilisateur invité n'arrive pas à passer le MFA (problème avec son propre compte)
+|Le MFA des Guests est géré par leur *propre organisation* (ou leur compte Microsoft personnel). +
+POWERiti ne peut pas intervenir sur les méthodes MFA d'un compte externe. Rediriger l'utilisateur vers son propre service IT ou le support Microsoft.
+
+|Invitation d'un nouvel utilisateur externe (B2B)
+|L'invitation crée automatiquement un compte Guest soumis à CA009. Aucune configuration supplémentaire n'est nécessaire. +
+S'assurer que l'utilisateur invité dispose bien d'un compte compatible MFA (Microsoft, compte professionnel M365, etc.) avant de l'inviter.
+
+|Un Guest doit accéder à des ressources sans MFA (cas exceptionnel)
+|Aucune exception n'est prévue sur CA009. Toute demande dérogatoire doit être instruite en ticket Autotask et validée par le Directeur Technique.
+|===
 
 ---
 
-== Notes de gestion
+== Flux de décision — Évaluation d'une connexion
 
-IMPORTANT: Les emplacements nommés (`GEO_FRANCE`, `GEO_TEMPO-COUNTRY-ALLOWED`, `IP_COREVIEW`) doivent être maintenus à jour dans *Microsoft Entra ID > Conditional Access > Named Locations*.
+Entra ID évalue toutes les stratégies CA simultanément à chaque tentative de connexion. Ce diagramme représente la logique dans l'ordre de priorité : les blocages sont traités en premier, les exigences MFA s'appliquent ensuite aux connexions qui ont passé tous les contrôles.
 
-WARNING: Les groupes `GRP_ADMINISTRATEUR` et `GRP_HORS-FRANCE-OK` sont les principaux pivots d'exception — leur composition doit faire l'objet d'une revue d'accès régulière.
+[mermaid]
+....
+flowchart TD
+  START([Tentative de connexion]) --> CA001
 
-NOTE: Toute demande d'exception client doit être instruite en ticket Autotask et validée par le Directeur Technique avant modification des politiques.
+  CA001{"CA001 — Localisation\nPays de connexion ?"}
+  CA001 -->|"France — GEO_FRANCE\nou GEO_TEMPO-COUNTRY-ALLOWED\nou GRP_HORS-FRANCE-OK"| CA002
+  CA001 -->|Pays non autorisé| BL([BLOCAGE])
 
-TIP: Ce document est versionné — toute évolution des stratégies doit entraîner une mise à jour de la version et de la date en en-tête.
+  CA002{"CA002 — Protocole\nAuthentification moderne ?"}
+  CA002 -->|"OAuth 2.0 — Modern Auth"| CA003
+  CA002 -->|"Legacy Auth — IMAP, POP3, SMTP, ActiveSync"| BL
+
+  CA003{"CA003 — Compte CoreView ?\nSi oui — IP autorisée ?"}
+  CA003 -->|Non CoreView| CA004
+  CA003 -->|"CoreView + IP_COREVIEW"| CA004
+  CA003 -->|"CoreView + autre IP"| BL
+
+  CA004{"CA004 — Appareil\nReconnu par Entra ID ?"}
+  CA004 -->|"Entra Joined / Registered / Hybrid"| CA005
+  CA004 -->|"Android / iOS géré MAM\nou Guest"| CA005
+  CA004 -->|Inconnu ou personnel non géré| BL
+
+  CA005{"CA005 — Accès Graph ?\nSi oui — autorisé ?"}
+  CA005 -->|Pas Graph| MFA
+  CA005 -->|"Graph + GRP_ADMINISTRATEUR\nou ressource système"| MFA
+  CA005 -->|Graph sans autorisation| BL
+
+  MFA(["Blocages levés\nContrôles MFA"])
+
+  MFA --> CA006["CA006 — Admins\nMFA toutes les heures"]
+  MFA --> CA007["CA007 — Utilisateurs\nMFA tous les 90 jours"]
+  MFA --> CA008["CA008 — Hors France autorisé\nMFA toutes les 24h"]
+  MFA --> CA009["CA009 — Guests B2B\nMFA toutes les 24h"]
+
+  CA006 --> OK([Accès accordé])
+  CA007 --> OK
+  CA008 --> OK
+  CA009 --> OK
+....
+
+NOTE: Plusieurs stratégies MFA peuvent s'appliquer en même temps. Entra ID retient la plus restrictive. Exemple : un administrateur qui se connecte depuis l'étranger est soumis à CA006 (1h) ET CA008 (24h) — c'est le MFA toutes les heures qui s'applique.
 
 ---
 
@@ -273,6 +451,10 @@ TIP: Ce document est versionné — toute évolution des stratégies doit entra�
 [cols="1,1,3"]
 |===
 |Version |Date |Modification
+
+|1.1
+|31/05/2026
+|Remplacement des "Notes de gestion" par un diagramme de flux de décision CA — ajout des guides technicien par stratégie
 
 |1.0
 |13/05/2026
