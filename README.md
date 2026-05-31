@@ -1,2 +1,2 @@
 # doc
-Documentation technique POWERiti
+Documentation technique POWERiti https://bobpoweriti.github.io/doc/poweriti/index.html
