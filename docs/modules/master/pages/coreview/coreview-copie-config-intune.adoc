@@ -1,0 +1,192 @@
+= Coreview : Copie d'un profil de configuration Intune entre tenants (sans assignations de groupes)
+POWERiti, Équipe Technique
+:doctype: article
+:toc: left
+:toc-title: Sommaire
+:toclevels: 3
+:icons: font
+:version: 1.0
+:revdate: 01/06/2026
+:langue: fr
+:sectnums:
+
+== Objectif
+
+Décrire la procédure permettant de copier un profil de configuration Intune (modèle d'administration, catalogue de paramètres, etc.) depuis un tenant source vers un tenant destination via *Coreview Configuration Manager*, en *excluant volontairement les assignations de groupes*.
+
+Ce runbook répond au besoin typique de :
+
+* Capitaliser une configuration validée chez un client dans le tenant `POWERiti MASTER` (référence interne).
+* Diffuser une configuration de référence depuis `POWERiti MASTER` vers un ou plusieurs tenants clients, sans embarquer d'assignation à un groupe qui n'existerait pas côté destination.
+* Dupliquer une configuration vers un tenant de test sans impacter les utilisateurs réels.
+
+== Prérequis
+
+* Accès à *Coreview Configuration Manager* avec les droits sur les deux tenants (source et destination).
+* Les deux tenants sont onboardés dans Coreview (visibles dans `Sync`).
+* Identifier précisément le profil à copier dans Intune côté source (nom, plateforme, type).
+
+== Concept clé : pourquoi exclure les Assignments
+
+Dans Coreview, un profil de configuration Intune est représenté par plusieurs *Configuration Types* distincts :
+
+[cols="2,3,2"]
+|===
+|Configuration Type |Contenu |À copier ?
+
+|`MSGraph/DeviceManagement/GroupPolicyConfigurations`
+|Le profil parent (le "container" du profil dans Intune)
+|*Oui* (inclus automatiquement en dépendance)
+
+|`MSGraph/DeviceManagement/GroupPolicyConfigurations/DefinitionValues`
+|Les valeurs configurées pour chaque paramètre du profil
+|*Oui*
+
+|`MSGraph/DeviceManagement/GroupPolicyDefinitions`
+|Catalogue ADMX (définitions de paramètres disponibles)
+|Non (catalogue Microsoft, déjà présent)
+
+|`MSGraph/DeviceManagement/GroupPolicyConfigurations/Assignments`
+|Les associations du profil aux groupes Entra ID
+|*NON*
+|===
+
+IMPORTANT: La ligne `Assignments` contient les liens du profil vers les groupes Entra ID du tenant source. Si elle est copiée, Coreview tentera d'assigner le profil à des groupes qui n'existent probablement pas (ou pire, dont l'`objectId` correspond à un groupe différent) côté destination. C'est pour cette raison qu'on l'exclut systématiquement lors d'une copie inter-tenants.
+
+== Procédure pas à pas
+
+=== Étape 1 : ouvrir Reconcile dans Coreview
+
+. Se connecter à *Configuration Manager*.
+. Cliquer sur *Reconcile* dans le menu de gauche.
+. Sélectionner l'onglet *Apply configs* (3e onglet, à droite de "Link configs").
+
+=== Étape 2 : sélectionner le tenant source
+
+. Dans le champ *Select a tenant*, choisir le tenant qui contient la configuration de référence (ex : `GRETA-CFA VAUCLUSE` ou `POWERiti MASTER`).
+. Dans la section *Filters > By workload*, cocher uniquement *Intune* pour réduire la liste.
+
+=== Étape 3 : identifier les bonnes lignes
+
+Localiser les trois lignes pertinentes dans la liste :
+
+* `Intune > Devices > Configuration Profiles (Profile Type = Administrative Templates)` avec directory `MSGraph/DeviceManagement/GroupPolicyConfigurations`
+* `Intune > Devices > Configuration Profiles (Profile Type = Administrative Templates) > Definition Values` avec directory `MSGraph/DeviceManagement/GroupPolicyConfigurations/DefinitionValues`
+* `Intune > Devices > Configuration Profiles (Profile Type = Administrative Templates) > Assignments` avec directory `MSGraph/DeviceManagement/GroupPolicyConfigurations/Assignments`
+
+NOTE: Pour un profil de type *Settings Catalog*, les directories sont `MSGraph/DeviceManagement/ConfigurationPolicies` et `MSGraph/DeviceManagement/ConfigurationPolicies/Assignments`. Le principe reste le même.
+
+=== Étape 4 : cocher les bonnes cases
+
+. Déplier la ligne *GroupPolicyConfigurations* et cocher *uniquement le profil à copier* (ex : `Konnekt - Configuration`).
+. Déplier la ligne *DefinitionValues* et cocher *toutes les lignes `[Nom du profil]--*`* (paramètres individuels du profil).
+
+WARNING: Ne *jamais* cocher la ligne *Assignments*. C'est ce qui garantit qu'aucune assignation de groupe ne sera copiée.
+
+. Vérifier qu'aucune ligne n'appartenant à un autre profil n'est cochée par erreur.
+
+=== Étape 5 : lancer Apply to
+
+. Cliquer sur le bouton *Apply to* en bas à droite.
+. Dans la modale, sélectionner le tenant de destination.
+. Activer le toggle *Load configuration state* pour obtenir un aperçu de l'impact (recommandé).
+. Vérifier l'état des configurations :
+.. *Only in [source]* : la configuration sera ajoutée dans le tenant destination.
+.. *Conflicting with [destination]* : la configuration existe déjà avec des valeurs différentes, elle sera écrasée.
+.. *Matching* : aucun changement nécessaire.
+. Choisir *Sync only these changes* (option recommandée).
+. Renseigner un *Comment for sync* explicite, ex : `Copie profil Konnekt depuis GRETA-CFA VAUCLUSE - sans assignations groupes`.
+. Cliquer sur *Next*.
+
+=== Étape 6 : vérifier le Preview
+
+L'écran *Preview* doit afficher :
+
+* *Selected Configurations* : la liste des paramètres `[Nom du profil]--*` cochés.
+* *Dependencies* : le profil parent (`[Nom du profil]` sans double tiret), inclus automatiquement par Coreview.
+* *Aucune entrée* relative aux Assignments.
+
+CAUTION: Si une ligne Assignments apparaît dans le Preview, *annuler* (Cancel) et revenir à l'étape 4 pour décocher la ligne fautive.
+
+=== Étape 7 : approuver la sync
+
+. Cliquer sur *Apply now* pour lancer la génération du plan de sync.
+. La fenêtre *Sync history* s'ouvre et affiche le détail :
+.. *Added detail* : ce qui sera ajouté côté destination.
+.. *Changed resources* / *Unchanged resources* / *Skipped resources*.
+. Relire le bloc *Added detail* pour validation finale.
+. Cliquer sur *APPROVE* (bouton bleu) pour appliquer réellement la modification dans Intune.
+
+TIP: Le double système plan / approbation est une sécurité Coreview. Tant que l'`APPROVE` n'est pas cliqué, *rien n'est appliqué dans Intune*. En cas de doute, cliquer *REJECT* pour annuler le plan.
+
+== Vérification post-sync
+
+. Se connecter au *Centre d'administration Intune* avec le compte admin du tenant destination.
+. Naviguer vers *Appareils > Windows > Configuration*.
+. Vérifier la présence du profil copié (la *Dernière modification* doit correspondre à l'heure de la sync).
+. Ouvrir le profil et contrôler :
+.. Onglet *Paramètres de configuration* : tous les paramètres attendus sont présents et configurés.
+.. Onglet *Affectations* : *doit être vide* (objectif de la procédure).
+. Affecter manuellement le profil aux groupes adéquats du tenant destination si besoin.
+
+== Cas particuliers
+
+=== Profil Settings Catalog (au lieu de Administrative Templates)
+
+Remplacer dans la procédure :
+
+* `MSGraph/DeviceManagement/GroupPolicyConfigurations` par `MSGraph/DeviceManagement/ConfigurationPolicies`
+* `MSGraph/DeviceManagement/GroupPolicyConfigurations/Assignments` par `MSGraph/DeviceManagement/ConfigurationPolicies/Assignments`
+
+La logique d'exclusion des Assignments reste identique.
+
+=== Paramètres sensibles à retirer avant copie
+
+Certaines valeurs doivent être supprimées ou modifiées dans la copie côté destination, car elles sont spécifiques au tenant source :
+
+* Clés de licence (ex : `License Key` pour Konnekt)
+* URLs internes, FQDN spécifiques
+* Identifiants de tenant ou GUID
+
+TIP: Pour le profil Konnekt, supprimer la valeur `Konnekt - Configuration--License Key` côté destination après la sync. La clé sera renseignée à la volée selon le tenant client.
+
+=== Diffusion depuis MASTER vers plusieurs tenants clients
+
+Pour pousser un profil de référence vers plusieurs tenants à la fois :
+
+. Étape 2 : sélectionner `POWERiti MASTER` comme source.
+. Étape 4 : cocher les mêmes lignes (profil + DefinitionValues, *jamais* Assignments).
+. Étape 5 : dans la modale *Apply to*, sélectionner *plusieurs tenants destination* simultanément.
+
+NOTE: Quand plusieurs configurations sont appliquées à plusieurs tenants, le toggle *Load configuration state* est désactivé par Coreview. Procéder avec prudence et vérifier sur un tenant pilote en premier.
+
+== Erreurs courantes et résolution
+
+[cols="2,3"]
+|===
+|Symptôme |Cause / Résolution
+
+|Le profil apparaît côté destination mais sans aucun paramètre
+|La ligne *DefinitionValues* n'a pas été cochée. Relancer la procédure en cochant aussi les paramètres `--*`.
+
+|Le profil est créé avec des assignations vers des groupes inconnus
+|La ligne *Assignments* a été cochée par erreur. Supprimer le profil côté destination, puis relancer en excluant les Assignments.
+
+|Erreur de sync sur un paramètre (ex : `License Key`)
+|Valeur invalide ou spécifique au tenant source. Supprimer ce paramètre du profil copié côté destination et le configurer manuellement.
+
+|Le compteur de configurations sélectionnées semble incohérent
+|Coreview inclut automatiquement les dépendances (profil parent) sans les compter dans la sélection. Vérifier la section *Dependencies* du Preview pour confirmer.
+|===
+
+== Historique des révisions
+
+[cols="1,2,2,4"]
+|===
+|Version |Date |Auteur |Modifications
+
+|1.0
+|01/06/2026
+|Robert COTTON
+|Création initiale du runbook à partir de la copie réelle du profil `Konnekt - Configuration` depuis `GRETA-CFA VAUCLUSE` vers `POWERiti MASTER`.
+|===

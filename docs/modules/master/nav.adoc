@@ -8,6 +8,8 @@
 ** xref:master:entra-id/ca007.adoc[CA007 — MFA Users]
 ** xref:master:entra-id/ca008.adoc[CA008 — MFA Hors France]
 ** xref:master:entra-id/ca009.adoc[CA009 — MFA Guests]
+* xref:master:coreview/coreview.adoc[Coreview]
+** xref:master:coreview/coreview-copie-config-intune.adoc[Copie profil Intune inter-tenants]
 * xref:master:intune/configuration-profiles.adoc[Politiques Intune]
 ** xref:master:intune/bitlocker.adoc[BitLocker]
 ** xref:master:intune/edge.adoc[Configuration Edge]

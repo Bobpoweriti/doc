@@ -23,6 +23,14 @@
       <div class="home-card-title">Politiques Intune</div>
     </a>
 
+    <a class="home-card home-card--teal" href="master/coreview/coreview.html">
+      <div class="home-card-icon-wrap">
+        <div class="home-card-icon">🔄</div>
+        <span class="home-card-badge">1</span>
+      </div>
+      <div class="home-card-title">Coreview</div>
+    </a>
+
     <div class="home-card home-card--purple home-card--soon">
       <div class="home-card-icon-wrap">
         <div class="home-card-icon">🛡️</div>

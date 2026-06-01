@@ -1,0 +1,18 @@
+= Coreview — Configuration Manager
+POWERiti — Équipe Technique
+:description: Runbooks Coreview Configuration Manager — gestion inter-tenants Microsoft 365
+
+Procédures opérationnelles pour la gestion de configurations via Coreview Configuration Manager — cliquez sur une carte pour accéder au détail.
+
+++++
+<div class="home-hero" style="padding-top:.5rem">
+  <div class="home-grid">
+
+    <a class="home-card home-card--teal" href="coreview-copie-config-intune.html">
+      <div class="home-card-title">Copie profil Intune</div>
+      <div class="home-card-desc">Copie inter-tenants sans assignations de groupes</div>
+    </a>
+
+  </div>
+</div>
+++++
